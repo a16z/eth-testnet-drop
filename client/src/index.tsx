@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Background from './components/background/Background';
 import Foreground from './components/foreground/Foreground';
+import Logos from './components/Logos';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -10,7 +11,7 @@ import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import Logos from './components/Logo';
+import GraffitiTicker from './components/GraffitiTicker';
 
 
 
@@ -47,12 +48,14 @@ root.render(
       <Background>
         <WagmiConfig client={client}>
           <Foreground />
+          <GraffitiTicker></GraffitiTicker>
         </WagmiConfig>
       </Background>
     </Suspense>
 
     <Logos></Logos>
 
+    
   </React.StrictMode>
 );
 

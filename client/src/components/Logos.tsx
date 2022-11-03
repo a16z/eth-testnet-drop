@@ -9,8 +9,8 @@ const Logos = () => {
 
             {/* Horizontal stack */}
             <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center">
-                <img src="/ef-logo.webp" className="h-20 m-5"></img>
-                <img src="/a16zcrypto-logo.svg" className="h-20 m-5"></img>
+                <img src="/ef-logo.webp" className="h-20 m-5" alt="ef logo"></img>
+                <img src="/a16zcrypto-logo.svg" className="h-20 m-5" alt="a16z crypto logo"></img>
             </div>
         </div>
     )

@@ -1,6 +1,6 @@
 
 
-import { useAccount, useConnect, useContract, useContractRead, useDisconnect, useContractWrite, usePrepareContractWrite, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useAccount, useConnect, useContractRead, useDisconnect, useContractWrite, usePrepareContractWrite, useNetwork, useSwitchNetwork } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { CheckCircleIcon, ExclamationTriangleIcon, QuestionMarkCircleIcon, XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { utils } from "ethers";
@@ -93,7 +93,6 @@ const Claiming = (props: {address: string}) => {
     let claimedLoading = claimQuery.isLoading;
     let claimed = claimQuery.data;
 
-    console.log("CurrentConfig ", CurrentConfig);
 
     let rootQuery = useContractRead({
         address: CurrentConfig.ContractAddr,
@@ -117,7 +116,7 @@ const Claiming = (props: {address: string}) => {
             })
     }, [])
 
-    let loadingComplete = leaves.length > 0 && claimedLoading == false && rootQueryLoading == false;
+    let loadingComplete = leaves.length > 0 && claimedLoading === false && rootQueryLoading === false;
 
     // Options to display:
     // 1. Ineligible (not in merkle leaves)
@@ -142,7 +141,7 @@ const Claiming = (props: {address: string}) => {
                     </div>
                     <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>)
-        } else if (claimed == true) {
+        } else if (claimed === true) {
             return (
                 <div>
                     <div className="rounded-md bg-yellow-50 p-4">
@@ -182,10 +181,7 @@ const Claiming = (props: {address: string}) => {
             let leaf = keccak256(props.address);
             let proof = merkleTree.getHexProof(leaf);
 
-            console.log("Local root: ", localRoot)
-            console.log("Root: ", root)
-
-            if (localRoot != root) { // Possible if the front end and contract get out of sync (likely due to caching)
+            if (localRoot !== root) { // Possible if the front end and contract get out of sync (likely due to caching)
                 return (
                     <div>
                         <div className="rounded-md bg-red-50 p-4">
@@ -218,7 +214,7 @@ const ClaimButton = (props: {proof: string[], leaf: string, parentReload: Functi
         abi: CollectorAbi.abi,
         chainId: CurrentConfig.ChainId,
         functionName: "collect",
-        args: [props.proof, "GRAF"]
+        args: [props.proof, "GRAFFITI"]
     })
 
     const { write } = useContractWrite(

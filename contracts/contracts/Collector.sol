@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Collector is Ownable {
 
-    event Claim(address);
+    event Claim(address sender, string graffiti);
 
     uint gweiPerClaim;
     bytes32 public root;
@@ -31,7 +31,7 @@ contract Collector is Ownable {
         claimed[msg.sender] = true;
 
         payable(address(msg.sender)).transfer(gweiPerClaim);
-        emit Claim(msg.sender);
+        emit Claim(msg.sender, graffiti);
 
         return true;
     }
