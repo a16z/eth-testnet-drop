@@ -25,6 +25,6 @@ const LocalConfig: Config = {
     GraffitiMaxBlocks: 10_000,
 }
 
-let CurrentConfig = process.env.NODE_ENV == 'production' ? GoerliConfig : LocalConfig;
+let CurrentConfig = process.env.NODE_ENV === 'production' ? GoerliConfig : LocalConfig;
 
 export default CurrentConfig;

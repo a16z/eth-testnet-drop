@@ -44,9 +44,7 @@ const GraffitiTicker = () => {
         <div className="fixed bottom-0 graffiti w-full items-end">
             <Marquee gradient={false} gradientWidth={0} speed={50} delay={2}>
                 <div className="spacer"></div>
-                <h1 className="m-2 p-1">
-                    Graffiti
-                </h1>
+                { messages.length > 0 ? <h1 className="m-2 p-1">Graffiti</h1> : "" }
                 { messages.map((msg, index) => {
                     return (
                         <div className="graffiti-blob m-2 p-1 border rounded-md drop-shadow mx-4" key={index}>

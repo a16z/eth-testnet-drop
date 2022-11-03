@@ -10,7 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+// import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import GraffitiTicker from './components/GraffitiTicker';
 import CurrentConfig from './config';
 

@@ -30,7 +30,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "yarn update && react-scripts start",
+    "start": "yarn update && GENERATE_SOURCEMAP=false react-scripts start",
     "build": "yarn update && react-scripts build",
     "eject": "react-scripts eject",
     "update": "cp ../contracts/mt.txt ./public && cp ../contracts/local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",

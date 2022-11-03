@@ -1,8 +1,8 @@
 // @ts-nocheck
 import './Background.css';
 import * as THREE from "three"
-import { useEffect, useRef, useState } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { useEffect, useRef } from "react"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { Physics, usePlane, useCompoundBody, useSphere } from "@react-three/cannon"
 import { Environment, Sky, useGLTF } from "@react-three/drei"
 import { EffectComposer, SSAO } from "@react-three/postprocessing"
@@ -55,7 +55,7 @@ function Diamond(
     (p) => {
       api.applyForce(center.set(...p).normalize().multiplyScalar(-props.args * FORCE_MULTIPLIER).toArray()
     , [0, 0, 0])
-  }), [api]) // prettier-ignore
+  })) // prettier-ignore
 
 
   return (
@@ -73,7 +73,6 @@ function Diamond(
 }
 
 function Collisions(props: {mousePos?: any}) {
-  const viewport = useThree((state) => state.viewport)
   usePlane(() => ({ position: [0, 0, 0], rotation: [0, 0, 0] }))
   usePlane(() => ({ position: [0, 0, 8], rotation: [0, -Math.PI, 0] }))
   usePlane(() => ({ position: [0, -4, 0], rotation: [-Math.PI / 2, 0, 0] }))
