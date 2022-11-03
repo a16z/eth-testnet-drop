@@ -91,3 +91,15 @@ button {
     display: none;
   }
 }
+.logo {
+  position: absolute;
+
+  top: 70%;
+  left: 50%;
+
+  transform: translate(-50%, 0%);
+
+  text-align:center;
+
+  z-index: 2;
+}

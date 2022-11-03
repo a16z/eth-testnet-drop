@@ -10,6 +10,7 @@ import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import Logos from './pages/logo';
 
 
 
@@ -49,6 +50,9 @@ root.render(
         </WagmiConfig>
       </Background>
     </Suspense>
+
+    <Logos></Logos>
+
   </React.StrictMode>
 );
 
