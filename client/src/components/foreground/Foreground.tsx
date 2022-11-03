@@ -1,7 +1,6 @@
 
 
-import { useAccount, useConnect, useContract, useContractRead, useDisconnect, useContractWrite, usePrepareContractWrite, useNetwork, useSwitchNetwork } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
 import { CheckCircleIcon, ExclamationTriangleIcon, QuestionMarkCircleIcon, XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { utils } from "ethers";
 import { useEffect, useState } from 'react';
@@ -9,10 +8,7 @@ import CurrentConfig from '../../config';
 import CollectorAbi from "../../ABIs/Collector.json";
 import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
-import {
-    useDynamicContext,
-     DynamicContextProvider,
-  } from '@dynamic-labs/sdk-react';
+import { useDynamicContext } from '@dynamic-labs/sdk-react';
 
 const Foreground = () => {
     window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
@@ -37,15 +33,8 @@ const Foreground = () => {
 }
 
 const Content = () => {
-    const { user, handleLogOut, setShowAuthFlow, showAuthFlow, walletConnector } =
+    const { user, setShowAuthFlow, showAuthFlow, walletConnector } =
     useDynamicContext();
-    const { address, isConnected } = useAccount();
-    const { connect } = useConnect({
-        connector: new InjectedConnector(),
-    })
-    const { chain } = useNetwork()
-    const { switchNetwork } =
-      useSwitchNetwork()
 
     async function switchNet() {
         const provider = await walletConnector.getWeb3Provider();
@@ -88,10 +77,7 @@ const Content = () => {
 const Claiming = (props: {address: string}) => {
     let [leaves, setLeaves] = useState([] as string[]);
     let [collected, setCollected] = useState(false);
-    const { user, handleLogOut, setShowAuthFlow, showAuthFlow, walletConnector } =
-    useDynamicContext();
-
-    let { disconnect } = useDisconnect();
+    const { handleLogOut } = useDynamicContext();
 
     let claimQuery = useContractRead({
         address: CurrentConfig.ContractAddr,
@@ -130,7 +116,7 @@ const Claiming = (props: {address: string}) => {
             })
     }, [])
 
-    let loadingComplete = leaves.length > 0 && claimedLoading == false && rootQueryLoading == false;
+    let loadingComplete = leaves.length > 0 && claimedLoading === false && rootQueryLoading === false;
 
     // Options to display:
     // 1. Ineligible (not in merkle leaves)
@@ -155,7 +141,7 @@ const Claiming = (props: {address: string}) => {
                     </div>
                     <button type="button" onClick={handleLogOut} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>)
-        } else if (claimed == true) {
+        } else if (claimed === true) {
             return (
                 <div>
                     <div className="rounded-md bg-yellow-50 p-4">
@@ -198,7 +184,7 @@ const Claiming = (props: {address: string}) => {
             console.log("Local root: ", localRoot)
             console.log("Root: ", root)
 
-            if (localRoot != root) { // Possible if the front end and contract get out of sync (likely due to caching)
+            if (localRoot !== root) { // Possible if the front end and contract get out of sync (likely due to caching)
                 return (
                     <div>
                         <div className="rounded-md bg-red-50 p-4">
