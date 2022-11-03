@@ -31,7 +31,7 @@
     "start": "yarn update && react-scripts start",
     "build": "yarn update && react-scripts build",
     "eject": "react-scripts eject",
-    "update": "cp ../contracts/mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
+    "update": "cp ../contracts/mt.txt ./public && cp ../contracts/local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
     "deploy": "firebase deploy"
   },
   "eslintConfig": {

@@ -109,7 +109,7 @@ const Claiming = (props: {address: string}) => {
 
     // Get the merkle leaves
     useEffect(() => {
-        fetch("./mt.txt")
+        fetch(CurrentConfig.MerkleTreePath)
             .then((r) => r.text())
             .then(text => {
                 let leaves = text.split(",");
@@ -248,7 +248,7 @@ const FreeInput = () => {
 
     // Get the merkle leaves
     useEffect(() => {
-        fetch("./mt.txt")
+        fetch(CurrentConfig.MerkleTreePath)
             .then((r) => r.text())
             .then(text => {
                 let leaves = text.split(",");

@@ -8,7 +8,7 @@ import MerkleTree from "merkletreejs";
 import keccak256 from "keccak256";
 import { Signer } from "ethers";
 
-let DEAFULT_LEAVES_FILE = "mt.txt";
+let DEAFULT_LEAVES_FILE = "local-mt.txt";
 
 export async function deployDev(leavesFile: string = DEAFULT_LEAVES_FILE) {
     // Reset
@@ -25,8 +25,9 @@ export async function deployDev(leavesFile: string = DEAFULT_LEAVES_FILE) {
 
     let [signer] = await ethers.getSigners();
 
-    let allAddresses = generateSaveTree([address], 64, leavesFile);
+    let allAddresses = generateSaveTree([address], 100, leavesFile);
     await deployCollector(allAddresses, signer);
+    await transferEth(address, signer);
 }
 
 export async function deployCollector(leaves: string[] = [], signer: Signer) {
