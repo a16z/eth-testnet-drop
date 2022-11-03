@@ -1,0 +1,15 @@
+{
+	"private": true,
+	"workspaces": [
+		"client",
+		"contracts"
+	],
+	"scripts": {
+		"start-local-client": "cd client && yarn start",
+		"build-client": "cd client && yarn build",
+		"deploy-firebase": "cd client && yarn build && yarn deploy",
+		"test": "cd contracts && yarn test",
+		"deploy-local": "cd contracts && yarn deploy",
+		"start-local-node": "cd contracts && yarn start-node"
+	}
+}

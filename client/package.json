@@ -1,0 +1,61 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@heroicons/react": "^2.0.12",
+    "@react-three/cannon": "^6.4.0",
+    "@react-three/drei": "^9.34.4",
+    "@react-three/fiber": "^8.8.10",
+    "@react-three/postprocessing": "^2.6.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.65",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@types/three": "^0.144.0",
+    "buffer": "^6.0.3",
+    "ethers": "^5.7.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "three": "^0.145.0",
+    "three-stdlib": "^2.17.3",
+    "typescript": "^4.8.4",
+    "wagmi": "^0.7.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "yarn update && react-scripts start",
+    "build": "yarn update && react-scripts build",
+    "eject": "react-scripts eject",
+    "update": "cp ../contracts/mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
+    "deploy": "firebase deploy"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.2.1"
+  }
+}
