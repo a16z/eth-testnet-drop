@@ -218,7 +218,7 @@ const ClaimButton = (props: {proof: string[], leaf: string, parentReload: Functi
         abi: CollectorAbi.abi,
         chainId: CurrentConfig.ChainId,
         functionName: "collect",
-        args: [props.proof, props.leaf, "GRAF"]
+        args: [props.proof, "GRAF"]
     })
 
     const { write } = useContractWrite(
