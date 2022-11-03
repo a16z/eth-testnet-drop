@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Background from './pages/background/Background';
-import Foreground from './pages/foreground/Foreground';
+import Background from './components/background/Background';
+import Foreground from './components/foreground/Foreground';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -10,7 +10,7 @@ import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import Logos from './pages/logo';
+import Logos from './components/Logo';
 
 
 
