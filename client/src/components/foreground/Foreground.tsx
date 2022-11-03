@@ -9,7 +9,10 @@ import CurrentConfig from '../../config';
 import CollectorAbi from "../../ABIs/Collector.json";
 import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
-
+import {
+    useDynamicContext,
+     DynamicContextProvider,
+  } from '@dynamic-labs/sdk-react';
 
 const Foreground = () => {
     window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
@@ -34,6 +37,8 @@ const Foreground = () => {
 }
 
 const Content = () => {
+    const { user, handleLogOut, setShowAuthFlow, showAuthFlow, walletConnector } =
+    useDynamicContext();
     const { address, isConnected } = useAccount();
     const { connect } = useConnect({
         connector: new InjectedConnector(),
@@ -42,17 +47,23 @@ const Content = () => {
     const { switchNetwork } =
       useSwitchNetwork()
 
-    if (isConnected && address) {
-        if (chain?.id !== CurrentConfig.ChainId) {
-            return (
-                <div>
-                    <button className="w-full rounded border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(CurrentConfig.ChainId)}>Switch network to {CurrentConfig.NetworkName}</button>
-                </div>
-            )
+    async function switchNet() {
+        const provider = await walletConnector.getWeb3Provider();
+        const { chainId } = await provider.getNetwork();
 
-        } else {
-            return (<Claiming address={address}></Claiming>)
+        if (chainId !== CurrentConfig.ChainId && walletConnector.supportsNetworkSwitching()) {
+            let networkName = "Hardhat";
+            let networkChainId = 31337;
+            walletConnector.switchNetwork({ networkName, networkChainId });
         }
+    }
+
+    useEffect(() => {
+        switchNet().catch(console.error);
+      }, [user, walletConnector]);
+
+    if (user?.walletPublicKey && !showAuthFlow) {
+        return (<Claiming address={user.walletPublicKey}></Claiming>)
     } else {
         return (
             <div>
@@ -62,7 +73,7 @@ const Content = () => {
 
 
                 <div className="mt-2">
-                    <button type="button" onClick={() => connect()} className="w-full rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connect wallet</button>
+                    <button type="button" onClick={() => setShowAuthFlow(true)} className="w-full rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connect wallet</button>
                     <hr className="my-2"/>
                     <div className="text-gray-700">
                         or check address eligibility
@@ -77,6 +88,8 @@ const Content = () => {
 const Claiming = (props: {address: string}) => {
     let [leaves, setLeaves] = useState([] as string[]);
     let [collected, setCollected] = useState(false);
+    const { user, handleLogOut, setShowAuthFlow, showAuthFlow, walletConnector } =
+    useDynamicContext();
 
     let { disconnect } = useDisconnect();
 
@@ -140,7 +153,7 @@ const Claiming = (props: {address: string}) => {
                             </div>
                         </div>
                     </div>
-                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                    <button type="button" onClick={handleLogOut} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>)
         } else if (claimed == true) {
             return (
@@ -155,7 +168,7 @@ const Claiming = (props: {address: string}) => {
                             </div>
                         </div>
                     </div>
-                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                    <button type="button" onClick={handleLogOut} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>
             )
         } else { // Valid claimaint, ready to claim.
@@ -172,7 +185,7 @@ const Claiming = (props: {address: string}) => {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                        <button type="button" onClick={handleLogOut} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                     </div>
                 )
             }

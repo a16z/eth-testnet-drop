@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dynamic-labs/sdk-react": "^0.13.13",
     "@heroicons/react": "^2.0.12",
     "@react-three/cannon": "^6.4.0",
     "@react-three/drei": "^9.34.4",

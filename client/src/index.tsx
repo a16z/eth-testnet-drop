@@ -11,7 +11,9 @@ import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import Logos from './components/Logo';
-
+import {
+   DynamicContextProvider,
+} from '@dynamic-labs/sdk-react';
 
 
 
@@ -45,9 +47,20 @@ root.render(
   <React.StrictMode>
     <Suspense fallback={null}>
       <Background>
-        <WagmiConfig client={client}>
-          <Foreground />
-        </WagmiConfig>
+        <DynamicContextProvider
+          settings={{
+            appLogoUrl:
+              "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/262f.svg",
+            appName: "GoEth",
+            environmentId: "00ca15b7-845b-4f0c-abec-19bef950bd11",
+            privacyPolicyUrl: "https://www.x0rart.com/privacy-policy",
+            termsOfServiceUrl: "https://www.x0rart.com/terms-of-service"
+          }}
+        >
+          <WagmiConfig client={client}>
+            <Foreground />
+          </WagmiConfig>
+        </DynamicContextProvider>
       </Background>
     </Suspense>
 
