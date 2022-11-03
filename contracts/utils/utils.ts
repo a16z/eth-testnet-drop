@@ -1,9 +1,9 @@
 import { writeFileSync } from "fs";
 import crypto from 'crypto';
-import { Signer, utils } from "ethers";
+import { BigNumber, Signer, utils } from "ethers";
 
-export async function transferEth(address: string, signer: Signer) {
-    let tx = await signer.sendTransaction({to: address, value: utils.parseEther("10")});
+export async function transferEth(address: string, signer: Signer, amount: BigNumber) {
+    let tx = await signer.sendTransaction({to: address, value: amount});
     await tx.wait();
 }
 

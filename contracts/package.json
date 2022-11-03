@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.4",
     "@nomiclabs/hardhat-ethers": "^2.2.1",
-    "@nomiclabs/hardhat-waffle": "^2.0.2",
     "@openzeppelin/contracts": "^4.7.3",
     "@typechain/ethers-v5": "^9.0.0",
     "@typechain/hardhat": "^4.0.0",
@@ -22,7 +22,6 @@
     "@types/randombytes": "^2.0.0",
     "chai": "^4.3.6",
     "crypto": "^1.0.1",
-    "ethereum-waffle": "^3.4.0",
     "ethers": "^5.7.2",
     "hardhat": "^2.8.3",
     "hardhat-gas-reporter": "^1.0.7",
