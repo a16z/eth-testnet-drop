@@ -18,7 +18,6 @@ const GraffitiTicker = () => {
 
     // Query for deposit logs
     useEffect(() => {
-        // TODO: Query from multiple chains?
         let contract = new Contract(CurrentConfig.ContractAddr, CollectorAbi.abi, provider);
         let filter = contract.filters.Claim();
         provider.getBlockNumber()
@@ -33,6 +32,7 @@ const GraffitiTicker = () => {
                             return msg;
                         });
                         messages = messages.filter((msg) => msg.message !== "");
+                        messages = messages.reverse();
                         setMessages(messages);
                     })
                     .catch(err => console.error(err))
@@ -42,7 +42,11 @@ const GraffitiTicker = () => {
 
     return (
         <div className="fixed bottom-0 graffiti w-full items-end">
-            <Marquee gradient={false} gradientWidth={0} speed={100}>
+            <Marquee gradient={false} gradientWidth={0} speed={50} delay={2}>
+                <div className="spacer"></div>
+                <h1 className="m-2 p-1">
+                    Graffiti
+                </h1>
                 { messages.map((msg, index) => {
                     return (
                         <div className="graffiti-blob m-2 p-1 border rounded-md drop-shadow mx-4" key={index}>

@@ -26,14 +26,14 @@ const Foreground = () => {
 
                 {/* Content  */}
                 <div className="center px-4 py-4">
-                    <Content></Content>
+                    <Connecting />
                 </div>
             </div>
         </div>
     )
 }
 
-const Content = () => {
+const Connecting = () => {
     const { address, isConnected } = useAccount();
     const { connect } = useConnect({
         connector: new InjectedConnector(),
@@ -51,7 +51,7 @@ const Content = () => {
             )
 
         } else {
-            return (<Claiming address={address}></Claiming>)
+            return (<ClaimValidity address={address} />)
         }
     } else {
         return (
@@ -74,7 +74,7 @@ const Content = () => {
     }
 }
 
-const Claiming = (props: {address: string}) => {
+const ClaimValidity = (props: {address: string}) => {
     let [leaves, setLeaves] = useState([] as string[]);
     let [collected, setCollected] = useState(false);
 
@@ -201,20 +201,22 @@ const Claiming = (props: {address: string}) => {
 
             // Valid claim! Go for it!
 
-            return (<ClaimButton proof={proof} leaf={`0x${leaf.toString('hex')}`} parentReload={() => {setCollected(true)}}></ClaimButton>)
+            return (<ClaimInteraction proof={proof} leaf={`0x${leaf.toString('hex')}`} parentReload={() => {setCollected(true)}} />)
         }
     } else {
         return (<div>Loading</div>)
     }
 }
 
-const ClaimButton = (props: {proof: string[], leaf: string, parentReload: Function}) => {
+const ClaimInteraction = (props: {proof: string[], leaf: string, parentReload: Function}) => {
+    let [graffiti, setGraffiti] = useState("")
+
     const { config } = usePrepareContractWrite({
         address: CurrentConfig.ContractAddr,
         abi: CollectorAbi.abi,
         chainId: CurrentConfig.ChainId,
         functionName: "collect",
-        args: [props.proof, "GRAFFITI"]
+        args: [props.proof, graffiti]
     })
 
     const { write } = useContractWrite(
@@ -233,7 +235,14 @@ const ClaimButton = (props: {proof: string[], leaf: string, parentReload: Functi
         write?.();
     }
 
-    return (<button type="button" onClick={execute} className="w-full rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Collect</button>)
+    return (
+        <div>
+            <input type="text" className="form-input w-full rounded border border-gray-300 bg-gray-white my-2 text-sm" placeholder="(optional) graffiti" onChange={(evt) => setGraffiti(evt.target.value)} value={graffiti}/>
+            <button type="button" onClick={execute} className="w-full rounded border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Collect
+            </button>
+        </div>
+    )
 }
 
 const FreeInput = () => {

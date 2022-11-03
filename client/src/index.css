@@ -111,3 +111,7 @@ button {
 .graffiti-blob {
   background-color: rgba(240, 248, 255, .5);
 }
+
+.spacer {
+  width: 100vw;
+}
