@@ -22,14 +22,13 @@ const root = ReactDOM.createRoot(
 
 const { chains, provider, webSocketProvider} = configureChains(
   // defaultChains,
-  [chain.hardhat, chain.goerli], 
+  [chain.hardhat, chain.goerli, chain.sepolia], 
   [publicProvider()])
 
 // Set up client
 const client = createClient({
   autoConnect: true,
   connectors: [
-    new MetaMaskConnector({ chains }),
     new InjectedConnector({
       chains,
       options: {
@@ -37,6 +36,7 @@ const client = createClient({
         shimDisconnect: true,
       },
     }),
+    // new MetaMaskConnector({ chains }),
   ],
   provider,
   webSocketProvider,
