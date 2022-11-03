@@ -11,8 +11,6 @@ interface Message {
     message: string,
 }
 
-let MAX_NUM_BLOCKS_QUERY = 10_000;
-
 const GraffitiTicker = () => {
     let [messages, setMessages] = useState<Message[]>([]);
 
@@ -25,7 +23,7 @@ const GraffitiTicker = () => {
         let filter = contract.filters.Claim();
         provider.getBlockNumber()
             .then(blockNumber => {
-                contract.queryFilter(filter, blockNumber - MAX_NUM_BLOCKS_QUERY)
+                contract.queryFilter(filter, blockNumber - CurrentConfig.GraffitiMaxBlocks)
                     .then(events => {
                         let messages = events.map(evt => {
                             let msg: Message = {

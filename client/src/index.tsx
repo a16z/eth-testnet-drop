@@ -12,9 +12,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import GraffitiTicker from './components/GraffitiTicker';
-
-
-
+import CurrentConfig from './config';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -48,7 +46,7 @@ root.render(
       <Background>
         <WagmiConfig client={client}>
           <Foreground />
-          <GraffitiTicker></GraffitiTicker>
+          { CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
         </WagmiConfig>
       </Background>
     </Suspense>
