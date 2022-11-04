@@ -11,6 +11,8 @@ import MerkleTree from "merkletreejs";
 import keccak256 from "keccak256";
 import { readFileSync } from "fs";
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 let DEAFULT_LEAVES_FILE = "local-mt.txt"; // File to read dev leaves from
 let DEV_START_BALANCE = utils.parseEther("10"); // Starting balance of each wallet in DEV_WALLETS environment variable
 let CLAIM_AMOUNT = utils.parseEther("1.1"); // ETH amount per claim
@@ -31,6 +33,8 @@ let Configs: NodeConfig[] =  [
         port: 8501
     },
 ]
+
+deployDevDual().then(() => {}).catch(err => console.error(err))
 
 export async function deployDevDual() {
     let processes = deployAnvils();
@@ -90,6 +94,8 @@ async function chainSetup(devAddresses: string[]) {
 
         let contractAddress = await deployCollector(deploySigner);
 
+        console.log(`Deploy address ${index}: ${contractAddress}`);
+
         await provider.send("anvil_setBalance", [contractAddress, DEPOSIT_AMOUNT._hex])
     })
 }
@@ -105,7 +111,6 @@ async function deployCollector(signer: Signer): Promise<string> {
         let deploy = await factory.deploy(root, CLAIM_AMOUNT);
         await deploy.deployTransaction.wait();
 
-        console.log(`Deploy address: ${deploy.address}`);
 
         return deploy.address;
 }
@@ -115,7 +120,4 @@ function killProcesses(processes: child.ChildProcess[]) {
     // TODO: Something with results
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-
-deployDevDual().then(() => {}).catch(err => console.error(err))
