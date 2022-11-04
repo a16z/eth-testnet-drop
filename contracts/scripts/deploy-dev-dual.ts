@@ -1,4 +1,4 @@
-import { ContractFactory, Signer, utils, Wallet } from "ethers";
+import { Signer, utils, Wallet } from "ethers";
 import { exit } from "process";
 
 import 'dotenv/config';
@@ -11,10 +11,10 @@ import MerkleTree from "merkletreejs";
 import keccak256 from "keccak256";
 import { readFileSync } from "fs";
 
-let DEAFULT_LEAVES_FILE = "local-mt.txt";
-let CLAIM_AMOUNT = utils.parseEther("10");
-let DEPOSIT_AMOUNT = utils.parseEther("100");
-let DEV_START_BALANCE = utils.parseEther("10");
+let DEAFULT_LEAVES_FILE = "local-mt.txt"; // File to read dev leaves from
+let DEV_START_BALANCE = utils.parseEther("10"); // Starting balance of each wallet in DEV_WALLETS environment variable
+let CLAIM_AMOUNT = utils.parseEther("1.1"); // ETH amount per claim
+let DEPOSIT_AMOUNT = utils.parseEther("100"); // Amount to deposit in the contract
 
 interface NodeConfig {
     chain_id: number,
@@ -31,7 +31,6 @@ let Configs: NodeConfig[] =  [
         port: 8501
     },
 ]
-
 
 export async function deployDevDual() {
     let processes = deployAnvils();
@@ -89,11 +88,13 @@ async function chainSetup(devAddresses: string[]) {
 
         let deploySigner = new Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider) // Anvil PK 0
 
-        await deployCollector(deploySigner);
+        let contractAddress = await deployCollector(deploySigner);
+
+        await provider.send("anvil_setBalance", [contractAddress, DEPOSIT_AMOUNT._hex])
     })
 }
 
-async function deployCollector(signer: Signer) {
+async function deployCollector(signer: Signer): Promise<string> {
         let factory = new Collector__factory(signer);
 
         let leaves = readFileSync(DEAFULT_LEAVES_FILE).toString().split(",");
@@ -105,6 +106,8 @@ async function deployCollector(signer: Signer) {
         await deploy.deployTransaction.wait();
 
         console.log(`Deploy address: ${deploy.address}`);
+
+        return deploy.address;
 }
 
 function killProcesses(processes: child.ChildProcess[]) {
