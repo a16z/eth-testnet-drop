@@ -19,9 +19,9 @@ const root = ReactDOM.createRoot(
 );
 
 const { chains, provider, webSocketProvider} = configureChains(
-  // defaultChains,
-  [chain.hardhat, chain.goerli, chain.sepolia], 
-  [publicProvider()])
+  CurrentConfig.Chains, 
+  [publicProvider()]
+)
 
 // Set up client
 const client = createClient({

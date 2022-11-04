@@ -14,12 +14,13 @@ This repo contains a faucet for testnet tokens. The faucet uses a standard merkl
 
 ## Dev workflow
 Set up the following environment variables:
-- DEV_WALLET (for local UI testing)
+- DEV_WALLETS (comma separated list – for local UI testing)
 - ALCHEMY_API_KEY (for Goerli deployment)
 - DEPLOY_PK (for Goerli deployment)
 
 Commands
-- Start local node: `yarn start-local-node`
-- Deploy contract to local node: `yarn deploy-local`
-- Start react dev server: `yarn start-local-client`
+- Start local node: `yarn start-local-backend`
+- Start local client: `yarn start-local-client`
 Navigate to `localhost:3000`, potentially clear nonces on wallet for testnet.
+
+Add the local testnets to wallet (as described in `contracts/README.md`).
