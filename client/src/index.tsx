@@ -19,7 +19,7 @@ const root = ReactDOM.createRoot(
 );
 
 const { chains, provider, webSocketProvider} = configureChains(
-  CurrentConfig.Chains, 
+  CurrentConfig.Chains.map(chain => chain.Chain), 
   [publicProvider()]
 )
 
@@ -44,11 +44,11 @@ root.render(
   <React.StrictMode>
     <Suspense fallback={null}>
       <Background>
-        <WagmiConfig client={client}>
-          <Foreground />
-          { CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
-        </WagmiConfig>
       </Background>
+      <WagmiConfig client={client}>
+        <Foreground />
+        { CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
+      </WagmiConfig>
     </Suspense>
 
     <Logos></Logos>

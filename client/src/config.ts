@@ -1,15 +1,5 @@
 import { Chain, chain } from "wagmi";
 
-interface Config {
-    ContractAddr: string,
-    NetworkName: string,
-    MerkleTreePath: string,
-    ChainId: number,
-    ShowGraffiti: boolean,
-    GraffitiMaxBlocks: number,
-    Chains: Chain[]
-}
-
 const Anvil8500Chain: Chain = {
     id: 8500,
     name: "Anvil 8500",
@@ -38,27 +28,55 @@ const Anvil8501Chain: Chain = {
     }
 }
 
-const GoerliConfig: Config = {
-    ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
-    NetworkName: "Goerli",
-    MerkleTreePath: "/mt.txt",
-    ChainId: 5,
-    ShowGraffiti: true,
-    GraffitiMaxBlocks: 1000, // Ankr RPC doesn't allow 10k
-    Chains: [chain.hardhat, chain.goerli, chain.sepolia],  // TODO: Make more better
+export interface ChainConfig {
+    ContractAddr: string,
+    HumanNetworkName: string,
+    Chain: Chain,
+}
+
+export interface Config {
+    Chains: ChainConfig[],
+    MerkleTreePath: string,
+    ShowGraffiti: boolean,
+    GraffitiMaxBlocks: number
 }
 
 const LocalConfig: Config = {
-    ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    NetworkName: "Hardhat", // TODO: Adjust
-    MerkleTreePath: "./local-mt.txt",
-    ChainId: 8500,
+    Chains: [
+        {
+            ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+            Chain: Anvil8500Chain,
+            HumanNetworkName: "Anvil8500",
+        },
+        {
+            ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+            Chain: Anvil8501Chain,
+            HumanNetworkName: "Anvil8501",
+        }
+    ],
+    MerkleTreePath: "/local-mt.txt",
     ShowGraffiti: true,
-    GraffitiMaxBlocks: 10_000,
-    Chains: [Anvil8500Chain, Anvil8501Chain]
+    GraffitiMaxBlocks: 1000
 }
 
+const ProdConfig: Config = {
+    Chains: [
+        {
+            ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
+            Chain: chain.goerli,
+            HumanNetworkName: "Goerli",
+        },
+        {
+            ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
+            Chain: chain.sepolia,
+            HumanNetworkName: "Sepolia",
+        }
+    ],
+    MerkleTreePath: "/mt.txt",
+    ShowGraffiti: true,
+    GraffitiMaxBlocks: 1000
+}
 
-let CurrentConfig = process.env.NODE_ENV === 'production' ? GoerliConfig : LocalConfig;
+let CurrentConfig = process.env.NODE_ENV === 'production' ? ProdConfig : LocalConfig;
 
 export default CurrentConfig;

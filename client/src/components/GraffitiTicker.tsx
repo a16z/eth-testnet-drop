@@ -1,44 +1,61 @@
 import { useEffect, useState } from 'react';
-import { Contract } from 'ethers';
+import { Contract, ethers } from 'ethers';
 import Marquee from "react-fast-marquee";
 import CurrentConfig from '../config';
 import CollectorAbi from "../ABIs/Collector.json";
-import { useProvider } from "wagmi";
 import { profanity } from '@2toad/profanity';
+
 
 interface Message {
     address: string,
     message: string,
+    timestamp: number,
 }
 
 const GraffitiTicker = () => {
     let [messages, setMessages] = useState<Message[]>([]);
 
-    let provider = useProvider();
-
     // Query for deposit logs
     useEffect(() => {
-        let contract = new Contract(CurrentConfig.ContractAddr, CollectorAbi.abi, provider);
-        let filter = contract.filters.Claim();
-        provider.getBlockNumber()
-            .then(blockNumber => {
-                contract.queryFilter(filter, blockNumber - CurrentConfig.GraffitiMaxBlocks)
-                    .then(events => {
-                        let messages = events.map(evt => {
-                            let msg: Message = {
-                                address: evt!.args!['sender'],
-                                message: profanity.censor(evt!.args!['graffiti'])
-                            }
-                            return msg;
-                        });
-                        messages = messages.filter((msg) => msg.message !== "");
-                        messages = messages.reverse();
-                        setMessages(messages);
-                    })
-                    .catch(err => console.error(err))
-            })
-            .catch(err => console.error(err))
-    })
+        CurrentConfig.Chains.map(chainConfig => {
+            let rpcUrl = chainConfig.Chain.rpcUrls.default;
+            let network = chainConfig.Chain.id;
+            let address = chainConfig.ContractAddr;
+            let provider = new ethers.providers.JsonRpcProvider(rpcUrl, network);
+            let contract = new Contract(address, CollectorAbi.abi, provider);
+            let filter = contract.filters.Claim();
+            provider.getBlockNumber()
+                .then(blockNumber => {
+                    let fromBlock = blockNumber - CurrentConfig.GraffitiMaxBlocks;
+                    fromBlock = fromBlock > 0 ? fromBlock : 0;
+                    contract.queryFilter(filter, fromBlock)
+                        .then(async events => {
+                            let newMessages = await Promise.all(events.map(async (evt) => {
+                                let block = await evt.getBlock();
+                                let msg: Message = {
+                                    address: evt!.args!['sender'],
+                                    message: profanity.censor(evt!.args!['graffiti']),
+                                    timestamp: block.timestamp,
+                                }
+                                console.log("msg ", msg)
+                                return msg;
+                            }));
+                            newMessages = newMessages.filter((msg) => msg.message !== "");
+
+                            // Aggregate, sort, dedupe
+                            messages = messages.concat(newMessages);
+                            messages = messages.sort((a, b) => b.timestamp - a.timestamp);
+                            // TODO: Dedupe
+
+                            console.log("setting messages ", messages);
+
+                            setMessages(messages);
+                        })
+                        .catch(err => console.error(err))
+                })
+                .catch(err => console.error(err))
+        })
+    }, [])
 
     return (
         <div className="fixed bottom-0 graffiti w-full items-end">

@@ -5,10 +5,11 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { CheckCircleIcon, ExclamationTriangleIcon, QuestionMarkCircleIcon, XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { utils } from "ethers";
 import { useEffect, useState } from 'react';
-import CurrentConfig from '../../config';
+import CurrentConfig, { ChainConfig } from '../../config';
 import CollectorAbi from "../../ABIs/Collector.json";
 import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
+import { ConfigForChainId } from "../../utils/utils";
 
 
 const Foreground = () => {
@@ -34,7 +35,7 @@ const Foreground = () => {
 }
 
 const Connecting = () => {
-    const { address, isConnected } = useAccount();
+    const { address: walletAddress, isConnected } = useAccount();
     const { connect } = useConnect({
         connector: new InjectedConnector(),
     })
@@ -42,16 +43,19 @@ const Connecting = () => {
     const { switchNetwork } =
       useSwitchNetwork()
 
-    if (isConnected && address) {
-        if (chain?.id !== CurrentConfig.ChainId) {
+    if (isConnected && walletAddress && chain) {
+        let chainConfig = ConfigForChainId(chain!.id);
+        if (chainConfig === undefined) {
             return (
                 <div>
-                    <button className="w-full rounded border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(CurrentConfig.ChainId)}>Switch network to {CurrentConfig.NetworkName}</button>
+                    { CurrentConfig.Chains.map((chain, index) => (
+                        <button key={index} className="w-full m-2 rounded border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(chain.Chain.id)}>Switch network to {chain.HumanNetworkName}</button>
+                    )) }
                 </div>
             )
 
         } else {
-            return (<ClaimValidity address={address} />)
+            return (<ClaimValidity address={walletAddress} />)
         }
     } else {
         return (
@@ -80,10 +84,14 @@ const ClaimValidity = (props: {address: string}) => {
 
     let { disconnect } = useDisconnect();
 
+    let { chain } = useNetwork();
+
+    let chainConfig = ConfigForChainId(chain!.id)!;
+
     let claimQuery = useContractRead({
-        address: CurrentConfig.ContractAddr,
+        address: chainConfig.ContractAddr,
         abi: CollectorAbi.abi,
-        chainId: CurrentConfig.ChainId,
+        chainId: chainConfig.Chain.id,
         functionName: "claimed",
         args: [props.address],
         onError: (error) => {
@@ -95,9 +103,9 @@ const ClaimValidity = (props: {address: string}) => {
 
 
     let rootQuery = useContractRead({
-        address: CurrentConfig.ContractAddr,
+        address: chainConfig.ContractAddr,
         abi: CollectorAbi.abi,
-        chainId: CurrentConfig.ChainId,
+        chainId: chainConfig.Chain.id,
         functionName: "root",
         onError: (error) => {
             console.error(error);
@@ -211,10 +219,13 @@ const ClaimValidity = (props: {address: string}) => {
 const ClaimInteraction = (props: {proof: string[], leaf: string, parentReload: Function}) => {
     let [graffiti, setGraffiti] = useState("")
 
+    let { chain } = useNetwork();
+    let chainConfig = ConfigForChainId(chain!.id)!;
+
     const { config } = usePrepareContractWrite({
-        address: CurrentConfig.ContractAddr,
+        address: chainConfig.ContractAddr,
         abi: CollectorAbi.abi,
-        chainId: CurrentConfig.ChainId,
+        chainId: chainConfig.Chain.id,
         functionName: "collect",
         args: [props.proof, graffiti]
     })
@@ -288,5 +299,7 @@ const FreeInput = () => {
         </div>
     )
 }
+
+
 
 export default Foreground;
