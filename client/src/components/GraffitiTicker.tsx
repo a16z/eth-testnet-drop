@@ -10,6 +10,7 @@ interface Message {
     address: string,
     message: string,
     timestamp: number,
+    tx: string,
 }
 
 const GraffitiTicker = () => {
@@ -36,8 +37,8 @@ const GraffitiTicker = () => {
                                     address: evt!.args!['sender'],
                                     message: profanity.censor(evt!.args!['graffiti']),
                                     timestamp: block.timestamp,
+                                    tx: evt.transactionHash
                                 }
-                                console.log("msg ", msg)
                                 return msg;
                             }));
                             newMessages = newMessages.filter((msg) => msg.message !== "");
@@ -45,11 +46,9 @@ const GraffitiTicker = () => {
                             // Aggregate, sort, dedupe
                             messages = messages.concat(newMessages);
                             messages = messages.sort((a, b) => b.timestamp - a.timestamp);
-                            // TODO: Dedupe
+                            let filteredMessages = messages.filter((msg, index) => messages.findIndex(msg2 => msg2.tx === msg.tx) === index);
 
-                            console.log("setting messages ", messages);
-
-                            setMessages(messages);
+                            setMessages(filteredMessages);
                         })
                         .catch(err => console.error(err))
                 })
