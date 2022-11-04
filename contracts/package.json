@@ -4,9 +4,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start-node": "npx hardhat node",
-    "deploy": "npx hardhat run scripts/deploy-dev.ts --network localhost",
-    "test": "npx hardhat test"
+    "start-local": "npx hardhat compile && ts-node scripts/deploy-dev-dual.ts",
+    "kill-local": "pkill anvil",
+    "test": "npx hardhat test",
+
+    "start-node": "npx hardhat node", 
+    "deploy": "npx hardhat run scripts/deploy-dev.ts --network localhost"
   },
   "author": "",
   "license": "ISC",
