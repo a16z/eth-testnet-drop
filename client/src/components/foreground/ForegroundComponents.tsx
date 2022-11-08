@@ -102,6 +102,14 @@ const ClaimValidity = (props: {address: string}) => {
 
     let loadingComplete = leaves.length > 0 && claimedLoading === false && rootQueryLoading === false;
 
+    let currentChainId = chainConfig.Chain.id;
+    let switchChain = CurrentConfig.Chains.find((other) => other.Chain.id !== currentChainId)!;
+
+    let switchChains = () => {
+        switchNetwork?.(switchChain.Chain.id);
+        setTxHash("");
+    }
+
     // Options to display:
     // 1. Ineligible (not in merkle leaves)
     // 2. Already claimed
@@ -138,6 +146,7 @@ const ClaimValidity = (props: {address: string}) => {
                             </div>
                         </div>
                     </div>
+                    <button className="w-full mt-2 rounded border border-gray-300 bg-white px-2 py-2 text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchChains()}>Switch network to {switchChain.HumanNetworkName}</button>
                     <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>
             )
@@ -146,14 +155,6 @@ const ClaimValidity = (props: {address: string}) => {
         } else { // Valid claimaint
             if (txHash !== "") {
                 let txUrl = `${chainConfig.BlockExplorerUrl}${txHash}`
-                let currentChainId = chainConfig.Chain.id;
-
-                let switchChain = CurrentConfig.Chains.find((other) => other.Chain.id !== currentChainId)!;
-
-                let switchChains = () => {
-                    switchNetwork?.(switchChain.Chain.id);
-                    setTxHash("");
-                }
 
                 return (
                     <div className="p-4">
