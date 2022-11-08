@@ -37,11 +37,13 @@ contract Collector is Ownable {
         return true;
     }
 
+    function adminUpdateRoot(bytes32 _root) public onlyOwner {
+        root = _root;
+    }
+
     function adminWithdraw(uint amount) public onlyOwner {
         payable(address(msg.sender)).transfer(amount);
     }
-
-    // TODO: Update root?
 
     // To recieve ETH
     receive() external payable {}

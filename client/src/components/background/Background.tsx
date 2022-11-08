@@ -10,24 +10,20 @@ import { EffectComposer, SSAO } from "@react-three/postprocessing"
 let NUM = 20;
 let BOUNDING_SPHERE_SCALAR = .9;
 let SIZES = [0.8, 0.9, 1, 1.05, 1.2]
-let FORCE_MULTIPLIER = 35;
+let FORCE_MULTIPLIER = 25;
 let MOUSE_BALL_SIZE = 3;
 
-THREE.ColorManagement.legacyMode = false
-// const diamondMaterial = new THREE.MeshStandardMaterial({ color: "#90B0C0", emissive: "blue", roughness: 0, metalness: 0.2 })
 const diamondMaterial = new THREE.MeshStandardMaterial(
   { 
       color: "#5c8fe6", 
-      // emissive: "blue", 
-      // roughness: .1, 
       metalness: 0.05 
   })
-// const diamondMaterial = new THREE.MeshStandardMaterial({ metalness: 0.6, roughness: 0.15, color: "blue", emissive: "blue", envMapIntensity: 20 })
 const diamonds = [...Array(NUM)].map(() => {
   let size = SIZES[Math.floor(Math.random() * SIZES.length)];
   return { 
     args: size, 
     mass: size * 2, 
+    position: [-5, 5, 0],
     angularDamping: 0.2, 
     linearDamping: 0.95 
   }
@@ -41,7 +37,6 @@ function Diamond(
   const [ref, api] = useCompoundBody(() => ({
     ...props,
     shapes: [
-      // { type: "Box", position: [0, 0, .2 * props.args], args: new THREE.Vector3().setScalar(props.args * 3).toArray() },
       { 
         type: "Sphere", 
         position: [0, 0, 0.1], // Cause some spin
@@ -55,7 +50,7 @@ function Diamond(
     (p) => {
       api.applyForce(center.set(p[0], p[1], p[2]).normalize().multiplyScalar(-props.args * FORCE_MULTIPLIER).toArray()
     , [0, 0, 0])
-  })) // prettier-ignore
+  }))
 
 
   return (
@@ -65,7 +60,6 @@ function Diamond(
         castShadow 
         scale={0.0025 * props.args} 
         position={[0, 0, 0]} 
-        // position={position} 
         geometry={eth_logo.nodes.Object_2.geometry} 
         material={diamondMaterial} 
         rotation={[0, Math.PI / 2, Math.PI / 2]}></mesh>
