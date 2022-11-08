@@ -58,6 +58,7 @@ const ClaimValidity = (props: {address: string}) => {
     let [txError, setTxError] = useState("");
 
     let { disconnect } = useDisconnect();
+    let { switchNetwork } = useSwitchNetwork();
 
     let { chain } = useNetwork();
 
@@ -73,7 +74,7 @@ const ClaimValidity = (props: {address: string}) => {
             console.error(error);
         }
     })
-    let claimedLoading = claimQuery.isLoading;
+    let claimedLoading = claimQuery.isLoading || claimQuery.isFetching;
     let claimed = claimQuery.data;
 
 
@@ -140,9 +141,20 @@ const ClaimValidity = (props: {address: string}) => {
                     <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>
             )
-        } else { // Valid claimaint, ready to claim.
+
+            // TODO: Switch network
+        } else { // Valid claimaint
             if (txHash !== "") {
                 let txUrl = `${chainConfig.BlockExplorerUrl}${txHash}`
+                let currentChainId = chainConfig.Chain.id;
+
+                let switchChain = CurrentConfig.Chains.find((other) => other.Chain.id !== currentChainId)!;
+
+                let switchChains = () => {
+                    switchNetwork?.(switchChain.Chain.id);
+                    setTxHash("");
+                }
+
                 return (
                     <div className="p-4">
                         <div className="rounded-md bg-green-50 overflow-hidden">
@@ -158,8 +170,8 @@ const ClaimValidity = (props: {address: string}) => {
                             <div className="border-t p-4">
                                 <a className="text-blue-600 hover:underline" href={txUrl}>Transaction details</a>
                             </div>
-
                         </div>
+                        <button className="w-full mt-2 rounded border border-gray-300 bg-white px-2 py-2 text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchChains()}>Switch network to {switchChain.HumanNetworkName}</button>
                         <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                     </div>
                 )

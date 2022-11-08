@@ -8,8 +8,7 @@ contract Collector is Ownable {
 
     event Claim(address sender, string graffiti);
 
-    // TODO: Immutable
-    uint weiPerClaim;
+    uint immutable weiPerClaim;
     bytes32 public root;
     mapping(address => bool) public claimed;
 
@@ -30,7 +29,7 @@ contract Collector is Ownable {
 
         require(address(this).balance >= weiPerClaim, "Insufficient funds");
 
-        // claimed[msg.sender] = true;
+        claimed[msg.sender] = true;
 
         payable(address(msg.sender)).transfer(weiPerClaim);
         emit Claim(msg.sender, graffiti);
@@ -41,6 +40,8 @@ contract Collector is Ownable {
     function adminWithdraw(uint amount) public onlyOwner {
         payable(address(msg.sender)).transfer(amount);
     }
+
+    // TODO: Update root?
 
     // To recieve ETH
     receive() external payable {}
