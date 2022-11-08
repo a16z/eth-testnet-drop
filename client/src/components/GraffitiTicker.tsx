@@ -33,9 +33,10 @@ const GraffitiTicker = () => {
                         .then(async events => {
                             let newMessages = await Promise.all(events.map(async (evt) => {
                                 let block = await evt.getBlock();
+                                let censored = profanity.censor(evt!.args!['graffiti']);
                                 let msg: Message = {
                                     address: evt!.args!['sender'],
-                                    message: profanity.censor(evt!.args!['graffiti']),
+                                    message: censored,
                                     timestamp: block.timestamp,
                                     tx: evt.transactionHash
                                 }

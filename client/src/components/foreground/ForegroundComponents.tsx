@@ -5,36 +5,14 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { CheckCircleIcon, ExclamationTriangleIcon, QuestionMarkCircleIcon, XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { utils } from "ethers";
 import { useEffect, useState } from 'react';
-import CurrentConfig, { ChainConfig } from '../../config';
+import CurrentConfig from '../../config';
 import CollectorAbi from "../../ABIs/Collector.json";
 import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
 import { ConfigForChainId } from "../../utils/utils";
 
 
-const Foreground = () => {
-    window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
-
-    return (
-        <div className="foreground-box rounded-md border w-full drop-shadow font-mono">
-            <div className="flex items-center items-stretch grid"> 
-                {/* Header */}
-                <div className="border-b border-gray-200">
-                    <h1 className="text-gray-900 px-4 py-4">
-                        Goerli Ethereum Airdrop
-                    </h1>
-                </div>
-
-                {/* Content  */}
-                <div className="center px-4 py-4">
-                    <Connecting />
-                </div>
-            </div>
-        </div>
-    )
-}
-
-const Connecting = () => {
+export const Connecting = () => {
     const { address: walletAddress, isConnected } = useAccount();
     const { connect } = useConnect({
         connector: new InjectedConnector(),
@@ -49,7 +27,7 @@ const Connecting = () => {
             return (
                 <div>
                     { CurrentConfig.Chains.map((chain, index) => (
-                        <button key={index} className="w-full m-2 rounded border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(chain.Chain.id)}>Switch network to {chain.HumanNetworkName}</button>
+                        <button key={index} className="w-full m-2 rounded border border-gray-300 bg-white px-2 py-2 text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(chain.Chain.id)}>Switch network to {chain.HumanNetworkName}</button>
                     )) }
                 </div>
             )
@@ -60,14 +38,10 @@ const Connecting = () => {
     } else {
         return (
             <div>
-                <h2 className="text-md font-medium text-gray-700">
-                    If you've ever deployed a contract on Goerli, you're eligible!
-                </h2>
-
-
-                <div className="mt-2">
-                    <button type="button" onClick={() => connect()} className="w-full rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connect wallet</button>
-                    <hr className="my-2"/>
+                <div className="p-4">
+                    <button type="button" onClick={() => connect()} className="w-full rounded rounded-md text-sm md:text-base border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connect wallet</button>
+                </div>
+                <div className="p-4 border-t">
                     <div className="text-gray-700">
                         or check address eligibility
                     </div>
@@ -136,50 +110,50 @@ const ClaimValidity = (props: {address: string}) => {
         let inSet = leaves.findIndex((value) => value.toLowerCase() === props.address.toLowerCase()) !== -1;
         if (!inSet)  {
             return (
-                <div>
-                    <div className="rounded-md bg-yellow-50 p-4">
+                <div className="p-4">
+                    <div className="rounded-md bg-yellow-50 p-4 overflow-hidden">
                         <div className="flex">
                             <div className="flex-shrink-0">
                                 <XCircleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true"></XCircleIcon>
                             </div>
                             <div className="ml-3">
-                                <h3 className="text-sm font-medium text-yellow-800">{ props.address } – Ineligible. No contracts deployed from this address to Goerli. </h3>
+                                <h3 className="text-yellow-800">{ props.address } – Ineligible. No contracts deployed from this address to Goerli. </h3>
                             </div>
                         </div>
                     </div>
-                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>)
         } else if (claimed === true) {
             return (
-                <div>
-                    <div className="rounded-md bg-yellow-50 p-4">
+                <div className="p-4">
+                    <div className="rounded-md bg-yellow-50 p-4 overflow-hidden">
                         <div className="flex">
                             <div className="flex-shrink-0">
                                 <XCircleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true"></XCircleIcon>
                             </div>
                             <div className="ml-3">
-                                <h3 className="text-sm font-medium text-yellow-800">{ props.address } – Already claimed. </h3>
+                                <h3 className="text-yellow-800">{ props.address } – Already claimed. </h3>
                             </div>
                         </div>
                     </div>
-                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                    <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>
             )
         } else { // Valid claimaint, ready to claim.
             if (collected) {
                 return (
-                    <div>
-                        <div className="rounded-md bg-green-50 p-4">
+                    <div className="p-4">
+                        <div className="rounded-md bg-green-50 p-4 overflow-hidden">
                             <div className="flex">
                                 <div className="flex-shrink-0">
                                     <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true"></CheckCircleIcon>
                                 </div>
                                 <div className="ml-3">
-                                    <h3 className="text-sm font-medium text-green-800">{ props.address } – Collected! </h3>
+                                    <h3 className="text-green-800">{ props.address } – Collected! </h3>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                        <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                     </div>
                 )
             }
@@ -198,7 +172,7 @@ const ClaimValidity = (props: {address: string}) => {
                                     <ExclamationTriangleIcon className="h-5 w-5 text-red-400" aria-hidden="true"></ExclamationTriangleIcon>
                                 </div>
                                 <div className="ml-3">
-                                    <h3 className="text-sm font-medium text-red-800">Client out of sync. Please wait and try again.</h3>
+                                    <h3 className="text-red-800">Client out of sync. Please wait and try again.</h3>
                                 </div>
                             </div>
                         </div>
@@ -247,9 +221,9 @@ const ClaimInteraction = (props: {proof: string[], leaf: string, parentReload: F
     }
 
     return (
-        <div>
-            <input type="text" className="form-input w-full rounded border border-gray-300 bg-gray-white my-2 text-sm" placeholder="(optional) graffiti" onChange={(evt) => setGraffiti(evt.target.value)} value={graffiti}/>
-            <button type="button" onClick={execute} className="w-full rounded border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <div className="p-4">
+            <input type="text" className="form-input w-full rounded border border-gray-300 bg-gray-white my-2" placeholder="(optional) graffiti" onChange={(evt) => setGraffiti(evt.target.value)} value={graffiti}/>
+            <button type="button" onClick={execute} className="w-full rounded border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 Collect
             </button>
         </div>
@@ -280,19 +254,19 @@ const FreeInput = () => {
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 rounded rounded-md rounded-r-none m-1">
                     <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true"></MagnifyingGlassIcon>
                 </div>
-                <input type="text" className="form-input w-full rounded border border-gray-300 bg-gray-white pl-14" placeholder="0xdeadbeef" onChange={(evt) => setAddress(evt.target.value)} value={address}/>
+                <input type="text" className="form-input w-full rounded border border-gray-300 pl-14 text-entry text-sm md:text-base" placeholder="0xdeadbeef" onChange={(evt) => setAddress(evt.target.value)} value={address}/>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                     { addressValid ? 
                         eligable ? <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" /> : <XCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" /> 
                         :
-                        <QuestionMarkCircleIcon className="h-5 w-5 text-blue-500" aria-hidden="true" /> 
+                        address === "" ? "" : <QuestionMarkCircleIcon className="h-5 w-5 text-blue-500" aria-hidden="true" /> 
                     }
                 </div>
             </div>
             { addressValid || address === "" ? 
                 ""
                 :
-                <div className="text-sm text-blue-700 mt-1">
+                <div className="text-blue-700 mt-1">
                     Invalid address
                 </div>
             }
@@ -302,4 +276,4 @@ const FreeInput = () => {
 
 
 
-export default Foreground;
+export default Connecting;

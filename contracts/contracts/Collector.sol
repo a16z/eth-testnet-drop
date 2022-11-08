@@ -8,15 +8,17 @@ contract Collector is Ownable {
 
     event Claim(address sender, string graffiti);
 
-    uint gweiPerClaim;
+    // TODO: Immutable
+    uint weiPerClaim;
     bytes32 public root;
     mapping(address => bool) public claimed;
 
-    constructor(bytes32 _root, uint _gweiPerClaim) {
+    constructor(bytes32 _root, uint _weiPerClaim) {
         root = _root;
-        gweiPerClaim = _gweiPerClaim;
+        weiPerClaim = _weiPerClaim;
     }
 
+    // TODO: Consider passing recipient 
     function collect(
         bytes32[] memory proof,
         string memory graffiti
@@ -26,11 +28,11 @@ contract Collector is Ownable {
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(proof, root, leaf), "Failed merkle proof");
 
-        require(address(this).balance > gweiPerClaim, "Insufficient funds");
+        require(address(this).balance >= weiPerClaim, "Insufficient funds");
 
-        claimed[msg.sender] = true;
+        // claimed[msg.sender] = true;
 
-        payable(address(msg.sender)).transfer(gweiPerClaim);
+        payable(address(msg.sender)).transfer(weiPerClaim);
         emit Claim(msg.sender, graffiti);
 
         return true;
@@ -42,5 +44,4 @@ contract Collector is Ownable {
 
     // To recieve ETH
     receive() external payable {}
-    fallback() external payable {}
 }

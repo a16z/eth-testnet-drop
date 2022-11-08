@@ -53,7 +53,7 @@ function Diamond(
   // Force towards center
   useEffect(() => api.position.subscribe(
     (p) => {
-      api.applyForce(center.set(...p).normalize().multiplyScalar(-props.args * FORCE_MULTIPLIER).toArray()
+      api.applyForce(center.set(p[0], p[1], p[2]).normalize().multiplyScalar(-props.args * FORCE_MULTIPLIER).toArray()
     , [0, 0, 0])
   })) // prettier-ignore
 
@@ -75,8 +75,8 @@ function Diamond(
 function Collisions(props: {mousePos?: any}) {
   usePlane(() => ({ position: [0, 0, 0], rotation: [0, 0, 0] }))
   usePlane(() => ({ position: [0, 0, 8], rotation: [0, -Math.PI, 0] }))
-  usePlane(() => ({ position: [0, -4, 0], rotation: [-Math.PI / 2, 0, 0] }))
-  usePlane(() => ({ position: [0, 4, 0], rotation: [Math.PI / 2, 0, 0] }))
+  usePlane(() => ({ position: [0, -6, 0], rotation: [-Math.PI / 2, 0, 0] }))
+  usePlane(() => ({ position: [0, 6, 0], rotation: [Math.PI / 2, 0, 0] }))
   const [, api] = useSphere(() => ({ type: "Kinematic", args: [MOUSE_BALL_SIZE] }))
 
   return useFrame((_) => {
@@ -135,9 +135,7 @@ const Background = (props: {children?: any}) => {
     </div>
 
     {/* The children */}
-    <div>
-      {props.children}
-    </div>
+    {props.children}
 
   </div>
 

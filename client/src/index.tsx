@@ -2,7 +2,8 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Background from './components/background/Background';
-import Foreground from './components/foreground/Foreground';
+import Foreground from './components/foreground/ForegroundComponents';
+import ForegroundContainer from './components/foreground/ForegroundContainer';
 import Logos from './components/Logos';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,6 +14,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 // import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import GraffitiTicker from './components/GraffitiTicker';
 import CurrentConfig from './config';
+import Foreground2 from './components/foreground/ForegroundContainer';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -44,14 +46,17 @@ root.render(
   <React.StrictMode>
     <Suspense fallback={null}>
       <Background>
+
+        {/* Nested within background such that we recieve foreground mouse events. */}
+        <WagmiConfig client={client}>
+          {/* <Foreground /> */}
+          <ForegroundContainer />
+          { CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
+        </WagmiConfig>
       </Background>
-      <WagmiConfig client={client}>
-        <Foreground />
-        { CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
-      </WagmiConfig>
     </Suspense>
 
-    <Logos></Logos>
+    {/* <Logos></Logos> */}
 
     
   </React.StrictMode>
