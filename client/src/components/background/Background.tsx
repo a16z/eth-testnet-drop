@@ -12,6 +12,8 @@ let BOUNDING_SPHERE_SCALAR = .9;
 let SIZES = [0.8, 0.9, 1, 1.05, 1.2]
 let FORCE_MULTIPLIER = 25;
 let MOUSE_BALL_SIZE = 3;
+let SPAWN_SPACE = [20, 5, 0]
+let SPAWN_OFFSET = [10, 0, 0]
 
 const diamondMaterial = new THREE.MeshStandardMaterial(
   { 
@@ -23,7 +25,12 @@ const diamonds = [...Array(NUM)].map(() => {
   return { 
     args: size, 
     mass: size * 2, 
-    position: [-5, 5, 0],
+    position: [
+      Math.random() * SPAWN_SPACE[0] - SPAWN_OFFSET[0], 
+      Math.random() * SPAWN_SPACE[1] - SPAWN_OFFSET[1], 
+      0
+    ],
+    rotation: [Math.PI / 2, 0, 0],
     angularDamping: 0.2, 
     linearDamping: 0.95 
   }
@@ -92,9 +99,22 @@ const Background = (props: {children?: any}) => {
     coords.y = y_adjusted;
   };
 
+  const handleTouchMove = (event) => {
+    let x = event.changedTouches[0].clientX / window.innerWidth;
+    let y = event.changedTouches[0].clientY / window.innerHeight;
+
+    let x_adjusted = (x - 0.5) * 10;
+    let y_adjusted = (y - 0.5) * -1 * 10;
+
+    coords.x = x_adjusted;
+    coords.y = y_adjusted;
+
+  }
+
   return (
   <div 
     onMouseMove={handleMouseMove} 
+    onTouchMove={handleTouchMove}
     style={{margin: 0, padding: 0, height: "100%", width: "100%"}}> 
 
     {/* Main bkg component */}
