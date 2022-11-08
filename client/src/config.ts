@@ -11,7 +11,7 @@ const Anvil8500Chain: Chain = {
     },
     rpcUrls: {
         default: 'http://localhost:8500'
-    }
+    },
 }
 
 const Anvil8501Chain: Chain = {
@@ -32,6 +32,7 @@ export interface ChainConfig {
     ContractAddr: string,
     HumanNetworkName: string,
     Chain: Chain,
+    BlockExplorerUrl: string,
 }
 
 export interface Config {
@@ -47,11 +48,13 @@ const LocalConfig: Config = {
             ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
             Chain: Anvil8500Chain,
             HumanNetworkName: "Anvil8500",
+            BlockExplorerUrl: "https://not-real-explorer.io/"
         },
         {
             ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
             Chain: Anvil8501Chain,
             HumanNetworkName: "Anvil8501",
+            BlockExplorerUrl: "https://not-real-explorer.io/"
         }
     ],
     MerkleTreePath: "/local-mt.txt",
@@ -65,11 +68,13 @@ const ProdConfig: Config = {
             ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
             Chain: chain.goerli,
             HumanNetworkName: "Goerli",
+            BlockExplorerUrl: "https://goerli.etherscan.io/tx/"
         },
         {
             ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
             Chain: chain.sepolia,
             HumanNetworkName: "Sepolia",
+            BlockExplorerUrl: "https://sepolia.etherscan.io/tx/"
         }
     ],
     MerkleTreePath: "/mt.txt",

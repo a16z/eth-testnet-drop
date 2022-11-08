@@ -25,7 +25,7 @@ const ForegroundContainer = () => {
                             Goerli ETH supplied by <a className="text-blue-600 hover:underline" href="https://chainsafe.io/">ChainSafe</a> 
                         </div>
                         <div className="text-xs md:text-base text-center text-gray-700 border-t p-4">
-                            Sepolia ETH supplied by <a className="text-blue-600 hover:underline" href="https://chainsafe.io/">Tim Beiko (TBD)</a> 
+                            Sepolia ETH supplied by <a className="text-blue-600 hover:underline" href="https://twitter.com/TimBeiko">Tim Beiko (TBD)</a> 
                         </div>
                         <div className="text-xs md:text-base text-center text-gray-700 border-t p-4 flex justify-center">
                             <span className="mr-2">
@@ -49,7 +49,7 @@ const ForegroundContainer = () => {
                     </li>
 
                     <li className="overflow-hidden rounded-md px-6 py-4 shadow foreground-bin">
-                        <div className="font-mono text-xs">
+                        <div className="text-xs">
                             See disclaimer <a className="text-blue-600 hover:underline" href="https://github.com/a16z/eth-testnet-drop/blob/main/DISCLAIMER.md">here.</a>
                         </div>
                     </li>

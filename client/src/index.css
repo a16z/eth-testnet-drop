@@ -91,7 +91,7 @@ a {
 .foreground-bin {
   background-color: rgba(240, 248, 255, .5);
   font-family: "Space Grotesk", sans-serif;
-  /* font-family: "IBM Plex Mono", monospace; */
+  cursor: auto;
 }
 
 .background-box {
@@ -114,19 +114,6 @@ button {
   }
 }
 
-.logo {
-  position: absolute;
-
-  top: 70%;
-  left: 50%;
-
-  transform: translate(-50%, 0%);
-
-  text-align:center;
-
-  z-index: 2;
-}
-
 .graffiti {
   font-family: monospace;
   white-space: nowrap;
@@ -139,7 +126,3 @@ button {
 .spacer {
   width: 100vw;
 }
-
-/* .text-entry {
-  background-color: rgba(240, 248, 255, .8);
-} */

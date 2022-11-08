@@ -25,9 +25,9 @@ export const Connecting = () => {
         let chainConfig = ConfigForChainId(chain!.id);
         if (chainConfig === undefined) {
             return (
-                <div>
+                <div className="p-4">
                     { CurrentConfig.Chains.map((chain, index) => (
-                        <button key={index} className="w-full m-2 rounded border border-gray-300 bg-white px-2 py-2 text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(chain.Chain.id)}>Switch network to {chain.HumanNetworkName}</button>
+                        <button key={index} className="w-full mt-2 rounded border border-gray-300 bg-white px-2 py-2 text-gray-700 shadow-sm hover:bg-gray-50" onClick={() => switchNetwork?.(chain.Chain.id)}>Switch network to {chain.HumanNetworkName}</button>
                     )) }
                 </div>
             )
@@ -54,7 +54,8 @@ export const Connecting = () => {
 
 const ClaimValidity = (props: {address: string}) => {
     let [leaves, setLeaves] = useState([] as string[]);
-    let [collected, setCollected] = useState(false);
+    let [txHash, setTxHash] = useState("");
+    let [txError, setTxError] = useState("");
 
     let { disconnect } = useDisconnect();
 
@@ -140,20 +141,37 @@ const ClaimValidity = (props: {address: string}) => {
                 </div>
             )
         } else { // Valid claimaint, ready to claim.
-            if (collected) {
+            if (txHash !== "") {
+                let txUrl = `${chainConfig.BlockExplorerUrl}${txHash}`
                 return (
                     <div className="p-4">
-                        <div className="rounded-md bg-green-50 p-4 overflow-hidden">
-                            <div className="flex">
+                        <div className="rounded-md bg-green-50 overflow-hidden">
+                            <div className="flex p-4">
                                 <div className="flex-shrink-0">
                                     <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true"></CheckCircleIcon>
                                 </div>
                                 <div className="ml-3">
-                                    <h3 className="text-green-800">{ props.address } – Collected! </h3>
+                                    <h3 className="text-green-800">{ props.address } – Collect Tx Sent! </h3> 
                                 </div>
                             </div>
+
+                            <div className="border-t p-4">
+                                <a className="text-blue-600 hover:underline" href={txUrl}>Transaction details</a>
+                            </div>
+
                         </div>
                         <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
+                    </div>
+                )
+            }
+
+            if (txError !== "") {
+                // TODO: Make less terrible
+                return (
+                    <div className="p-4">
+                        <div className="rounded-md bg-red-50 overflow-hidden text-red-400 border-gray-300 border p-2">
+                            Error: { txError }
+                        </div>
                     </div>
                 )
             }
@@ -183,14 +201,14 @@ const ClaimValidity = (props: {address: string}) => {
 
             // Valid claim! Go for it!
 
-            return (<ClaimInteraction proof={proof} leaf={`0x${leaf.toString('hex')}`} parentReload={() => {setCollected(true)}} />)
+            return (<ClaimInteraction proof={proof} leaf={`0x${leaf.toString('hex')}`} setError={setTxError} setTxHash={setTxHash} />)
         }
     } else {
         return (<div>Loading</div>)
     }
 }
 
-const ClaimInteraction = (props: {proof: string[], leaf: string, parentReload: Function}) => {
+const ClaimInteraction = (props: {proof: string[], leaf: string, setError: Function, setTxHash: Function}) => {
     let [graffiti, setGraffiti] = useState("")
 
     let { chain } = useNetwork();
@@ -210,8 +228,9 @@ const ClaimInteraction = (props: {proof: string[], leaf: string, parentReload: F
             onSettled: (data, error) => {
                 if (error) {
                     console.error(error);
+                    props.setError(error.message);
                 } else {
-                    props.parentReload();
+                    props.setTxHash(data?.hash);
                 }
             }
         })
