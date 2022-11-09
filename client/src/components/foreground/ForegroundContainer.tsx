@@ -13,7 +13,6 @@ const ForegroundContainer = () => {
                             pt-4
                             text-center">
                         <h1 className="text-2xl md:text-4xl">Testnet ETH Claim for Previous Ethereum Developers</h1>
-                        {/* <h2 className="font-mono pt-2 text-sm border-t">Merkle Faucet</h2> */}
                     </li>
                     <li className="overflow-hidden rounded-md shadow-md foreground-bin mt-0">
                         <h3 className="text-base md:text-lg leading-6 text-gray-900 border-b p-4">About</h3>

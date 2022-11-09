@@ -35,7 +35,7 @@
     "build-raw": "react-scripts build",
     "eject": "react-scripts eject",
     "update": "cp ../contracts/mt.txt ./public && cp ../contracts/local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
-    "deploy": "firebase deploy"
+    "deploy": "amplify publish"
   },
   "eslintConfig": {
     "extends": [

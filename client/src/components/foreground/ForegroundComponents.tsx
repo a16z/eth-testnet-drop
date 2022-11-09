@@ -223,16 +223,15 @@ const ClaimValidity = (props: {address: string}) => {
 
 const ClaimInteraction = (props: {proof: string[], leaf: string, setError: Function, setTxHash: Function}) => {
     let [graffiti, setGraffiti] = useState("")
-
+    const { address: walletAddress } = useAccount();
     let { chain } = useNetwork();
     let chainConfig = ConfigForChainId(chain!.id)!;
-
     const { config } = usePrepareContractWrite({
         address: chainConfig.ContractAddr,
         abi: CollectorAbi.abi,
         chainId: chainConfig.Chain.id,
         functionName: "collect",
-        args: [props.proof, graffiti]
+        args: [props.proof, graffiti, walletAddress]
     })
 
     const { write } = useContractWrite(
