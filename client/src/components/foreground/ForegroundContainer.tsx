@@ -5,7 +5,7 @@ const ForegroundContainer = () => {
     window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
 
     return (
-        <div className="foreground-container overflow-scroll">
+        <div className="foreground-container overflow-scroll md:overflow-hidden">
             <div className="flex flex-row min-h-screen justify-center items-center">
                 <ul className="space-y-3 w-5/6 md:w-1/2 items-center place-items-center align-center justify-center">
                     <li className="overflow-hidden 

@@ -30,7 +30,11 @@ const diamonds = [...Array(NUM)].map(() => {
       Math.random() * SPAWN_SPACE[1] - SPAWN_OFFSET[1], 
       0
     ],
-    rotation: [Math.PI / 2, 0, 0],
+    rotation: [
+      2 * Math.PI * Math.random(), 
+      2 * Math.PI * Math.random(), 
+      2 * Math.PI * Math.random(),
+    ],
     angularDamping: 0.2, 
     linearDamping: 0.95 
   }

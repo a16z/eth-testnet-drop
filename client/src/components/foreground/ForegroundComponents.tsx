@@ -150,8 +150,6 @@ const ClaimValidity = (props: {address: string}) => {
                     <button type="button" onClick={() => disconnect()} className="w-full mt-2 rounded rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Disconnect</button>
                 </div>
             )
-
-            // TODO: Switch network
         } else { // Valid claimaint
             if (txHash !== "") {
                 let txUrl = `${chainConfig.BlockExplorerUrl}${txHash}`
@@ -179,7 +177,6 @@ const ClaimValidity = (props: {address: string}) => {
             }
 
             if (txError !== "") {
-                // TODO: Make less terrible
                 return (
                     <div className="p-4">
                         <div className="rounded-md bg-red-50 overflow-hidden text-red-400 border-gray-300 border p-2">

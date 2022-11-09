@@ -1,9 +1,3 @@
-- `yarn install`
-- `npm start`
-
 # Deploy process
-- `yarn build`
-- `firebase serve`
-- `firebase deploy`
-
-- TODO: `firebase init hosting:github`
+- Confirm local prod deployment works as expected: `yarn serve`
+- Deploy to AWS Amplify: `yarn deploy`
