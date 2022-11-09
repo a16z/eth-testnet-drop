@@ -44,6 +44,10 @@ let config: HardhatUserConfig = {
     goerli: {
       url: `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
       accounts: [pk]
+    },
+    sepolia: {
+      url: `https://rpc.sepolia.dev`,
+      accounts: [pk]
     }
   }
 };

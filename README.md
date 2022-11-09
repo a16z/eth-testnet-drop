@@ -1,6 +1,6 @@
-# Testnet Faucet
+# Testnet Claim 
 ![UI](imgs/ui.png)
-Repo contains a one-time claim for testnet tokens. The contract uses a merkle proof for set inclusion. The associated client guides the user through claiming on multiple networks.
+Repo contains a one-time claim for testnet tokens. The contract uses a merkle proof for set inclusion. The associated client guides the user through claiming on multiple networks and has some neat background physics.
 
 ## `cmds`
 - `yarn install`
