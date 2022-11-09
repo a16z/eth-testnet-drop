@@ -17,8 +17,8 @@ let SPAWN_OFFSET = [10, 0, 0]
 
 const diamondMaterial = new THREE.MeshStandardMaterial(
   { 
-      color: "#5c8fe6", 
-      metalness: 0.05 
+      color: "#8f99fb", 
+      metalness: .26,
   })
 const diamonds = [...Array(NUM)].map(() => {
   let size = SIZES[Math.floor(Math.random() * SIZES.length)];
