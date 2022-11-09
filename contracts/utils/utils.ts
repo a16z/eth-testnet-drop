@@ -1,11 +1,5 @@
 import { writeFileSync } from "fs";
 import crypto from 'crypto';
-import { BigNumber, Signer, utils } from "ethers";
-
-export async function transferEth(address: string, signer: Signer, amount: BigNumber) {
-    let tx = await signer.sendTransaction({to: address, value: amount});
-    await tx.wait();
-}
 
 export function generateSaveTree(
     addressesToInclude: string[] = [], 

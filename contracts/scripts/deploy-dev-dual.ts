@@ -83,7 +83,8 @@ function deployAnvils() {
 
 async function chainSetup(devAddresses: string[]) {
     Configs.forEach(async (config, index) => {
-        let provider = new JsonRpcProvider(`http://localhost:${config.port}`);
+        let rpcUrl = `http://localhost:${config.port}`
+        let provider = new JsonRpcProvider(rpcUrl);
 
         // Top up
         devAddresses.forEach(async (address) => {
@@ -94,7 +95,7 @@ async function chainSetup(devAddresses: string[]) {
 
         let contractAddress = await deployCollector(deploySigner);
 
-        console.log(`Deploy address ${index}: ${contractAddress}`);
+        console.log(`Deployed ${index} to ${contractAddress} on ${rpcUrl}`);
 
         await provider.send("anvil_setBalance", [contractAddress, DEPOSIT_AMOUNT._hex])
     })
@@ -117,7 +118,10 @@ async function deployCollector(signer: Signer): Promise<string> {
 
 function killProcesses(processes: child.ChildProcess[]) {
     let results = processes.map((proc) => proc.kill());
-    // TODO: Something with results
+    let failedToKill = results.findIndex(result => !result) !== -1;
+    if (failedToKill) {
+        console.error("Failed to kill some anvil processes. Run `pkill anvil`.");
+    }
 }
 
 
