@@ -17,10 +17,10 @@ contract Collector is Ownable {
         weiPerClaim = _weiPerClaim;
     }
 
-    // TODO: Consider passing recipient 
     function collect(
         bytes32[] memory proof,
-        string memory graffiti
+        string memory graffiti,
+        address recipient
     ) public returns (bool) { 
         require(claimed[msg.sender] == false, "Already claimed");
 
@@ -31,7 +31,7 @@ contract Collector is Ownable {
 
         claimed[msg.sender] = true;
 
-        payable(address(msg.sender)).transfer(weiPerClaim);
+        payable(address(recipient)).transfer(weiPerClaim);
         emit Claim(msg.sender, graffiti);
 
         return true;
