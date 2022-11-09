@@ -1,7 +1,6 @@
 # Testnet Faucet
-This repo contains a faucet for testnet tokens. The faucet uses a standard merkle proof for set inclusion. In this case, we determine the set of addresses as any address that has ever deployed a contract on Goerli.
-
 ![UI](imgs/ui.png)
+Repo contains a one-time claim for testnet tokens. The contract uses a merkle proof for set inclusion. The associated client guides the user through claiming on multiple networks.
 
 ## `cmds`
 - `yarn install`
@@ -9,21 +8,16 @@ This repo contains a faucet for testnet tokens. The faucet uses a standard merkl
 - `yarn start-local-node`
 - `yarn deploy-local`
 - `yarn start-local-client`
-- `yarn deploy-firebase`
+- `yarn deploy-amplify`
 - `yarn build-client`
 
 ## Dev workflow
-Set up the following environment variables:
-- DEV_WALLETS (comma separated list – for local UI testing)
-- ALCHEMY_API_KEY (for Goerli deployment)
-- DEPLOY_PK (for Goerli deployment)
-
-Commands
-- Start local node: `yarn start-local-backend`
-- Start local client: `yarn start-local-client`
-Navigate to `localhost:3000`, potentially clear nonces on wallet for testnet.
-
-Add the local testnets to wallet (as described in `contracts/README.md`).
+1. Set up `DEV_WALLETS` environment variable – comma separated list of wallets to prepopulate with test ETH.
+2. Fill out `./contracts/local-mt.txt` with addresses for claiming.
+3. Start local nodes: `yarn start-local-backend`
+4. Start local client: `yarn start-local-client`
+5. Add the local testnets to wallet (as described in `contracts/README.md`).
+6. Navigate to `localhost:3000`, potentially clear nonces on wallet for test networks.
 
 
 # Disclaimer

@@ -141,7 +141,7 @@ const Background = (props: {children?: any}) => {
             return <Diamond 
               key={i} 
               {...props} />
-          }) /* prettier-ignore */}
+          }) }
         </Physics>
         <Sky></Sky>
       </Canvas>
