@@ -5,17 +5,14 @@ const ForegroundContainer = () => {
     window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
 
     return (
-        <div className="foreground-container overflow-scroll md:overflow-hidden">
+        <div className="foreground-container">
             <div className="flex flex-row min-h-screen justify-center items-center">
                 <ul className="space-y-3 w-5/6 md:w-1/2 items-center place-items-center align-center justify-center">
-                    <li className="overflow-hidden 
-                            px-6 
-                            pt-4
-                            text-center">
-                        <h1 className="text-2xl md:text-4xl">Testnet ETH Claim for Previous Ethereum Developers</h1>
+                    {/* Top spacer */}
+                    <li className="h-4">
                     </li>
                     <li className="overflow-hidden rounded-md shadow-md foreground-bin mt-0">
-                        <h3 className="text-base md:text-lg leading-6 text-gray-900 border-b p-4">About</h3>
+                        <h1 className="text-2xl md:text-4xl border-b text-gray-900 p-4 text-center">Testnet ETH Claim for Prior Ethereum Developers</h1>
                         <div className="text-xs md:text-base text-center text-gray-700 p-4">
                             Addresses that have deployed one or more contracts on Mainnet / Goerli / Sepolia before November 4, 2022 
                             are eligible for a <span className="underline">one time</span> claim of X (tbd) Goerli and Sepolia test ETH.

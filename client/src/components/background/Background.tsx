@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Physics, usePlane, useCompoundBody, useSphere } from "@react-three/cannon"
 import { Environment, Sky, useGLTF } from "@react-three/drei"
-import { EffectComposer, SSAO } from "@react-three/postprocessing"
 
 let NUM = 20;
 let BOUNDING_SPHERE_SCALAR = .9;
@@ -13,12 +12,12 @@ let SIZES = [0.8, 0.9, 1, 1.05, 1.2]
 let FORCE_MULTIPLIER = 25;
 let MOUSE_BALL_SIZE = 3;
 let SPAWN_SPACE = [20, 5, 0]
-let SPAWN_OFFSET = [10, 0, 0]
+let SPAWN_OFFSET = [8, 0, 0]
 
 const diamondMaterial = new THREE.MeshStandardMaterial(
   { 
       color: "#8f99fb", 
-      metalness: .26,
+      metalness: .56,
   })
 const diamonds = [...Array(NUM)].map(() => {
   let size = SIZES[Math.floor(Math.random() * SIZES.length)];
@@ -133,6 +132,7 @@ const Background = (props: {children?: any}) => {
         <spotLight position={[20, 20, 25]} penumbra={1} angle={0.2} color="white" castShadow shadow-mapSize={[512, 512]} />
         <directionalLight position={[0, 5, -4]} intensity={4} />
         <directionalLight position={[0, -15, -0]} intensity={4} color="red" />
+        <Environment files="/adamsbridge.hdr" />
         <Physics gravity={[0, 0, 0]}>
           <Collisions 
           mousePos={coords}
@@ -143,11 +143,6 @@ const Background = (props: {children?: any}) => {
               {...props} />
           }) /* prettier-ignore */}
         </Physics>
-        <Environment files="/adamsbridge.hdr" />
-        <EffectComposer multisampling={0}>
-          <SSAO samples={11} radius={0.1} intensity={20} luminanceInfluence={0.6} color="red" />
-          <SSAO samples={21} radius={0.03} intensity={10} luminanceInfluence={0.6} color="red" />
-        </EffectComposer>
         <Sky></Sky>
       </Canvas>
     </div>

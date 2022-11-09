@@ -86,6 +86,8 @@ a {
   left: 0;
 
   pointer-events: all;
+
+  overflow-y: scroll;
 }
 
 .foreground-bin {
