@@ -26,6 +26,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-local-mt.txt
-mt.txt
+contracts/artifacts
+contracts/cache
+contracts/typechain-types
+
+# local-mt.txt
+# mt.txt
 

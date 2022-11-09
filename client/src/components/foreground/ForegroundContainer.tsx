@@ -5,14 +5,14 @@ const ForegroundContainer = () => {
     window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
 
     return (
-        <div className="foreground-container overflow-scroll md:overflow-hidden">
+        <div className="foreground-container overflow-scroll">
             <div className="flex flex-row min-h-screen justify-center items-center">
                 <ul className="space-y-3 w-5/6 md:w-1/2 items-center place-items-center align-center justify-center">
                     <li className="overflow-hidden 
                             px-6 
                             pt-4
                             text-center">
-                        <h1 className="text-xl md:text-4xl">Testnet ETH Claim for Previous Ethereum Developers</h1>
+                        <h1 className="text-2xl md:text-4xl">Testnet ETH Claim for Previous Ethereum Developers</h1>
                         {/* <h2 className="font-mono pt-2 text-sm border-t">Merkle Faucet</h2> */}
                     </li>
                     <li className="overflow-hidden rounded-md shadow-md foreground-bin mt-0">
