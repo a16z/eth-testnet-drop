@@ -49,6 +49,7 @@ root.render(
         </WagmiConfig>
       </Background>
     </Suspense>
+
   </React.StrictMode>
 );
 
