@@ -113,7 +113,6 @@ function normalizeYValues(points: number[]): number[] {
         }
     }
     let diff = max / 2;
-    console.log("diff ", diff)
     for (let i = 1; i <= points.length; i += 3) {
         points[i] -= diff;
     }
