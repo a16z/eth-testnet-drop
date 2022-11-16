@@ -4,14 +4,20 @@
 ## test
 `npx hardhat test`
 
-## deploy
-1. Set up environment variables for `ALCHEMY_API_KY` and `DEPLOY_PK`.
-2. `npx hardhat deploy --network goerli --file mt.txt --amount 0.0001`
-
-## collect
+## collect using CLI
 *Ideally use the UI for collection, but if you'd like to use cmd, run the command below.*
-
 `ts-node ./scripts/collect.ts --pk=<collection private key> --rpc=<rpc for relevant chain> --contract_address=<Collector contract address> --leaves_file=<Merkle tree leaves file path>`
+
+## deploy (using gcloud KMS)
+1. Set up environment variables for:
+    - `ALCHEMY_API_KEY`
+    - `GOOGLE_APPLICATION_CREDENTIALS` ([details](https://cloud.google.com/docs/authentication/application-default-credentials#GAC))
+    - `KMS_PROJECT_ID`
+    - `KMS_LOCATION_ID`
+    - `KMS_KEYRING_ID`
+    - `KMS_KEY_ID`
+    - `KMS_KEY_VERSION`
+2. `ts-node ./scripts/deploy-kms.ts --network=goerli --amount=10000000000 --leaves_file=./mt.txt`
 
 There are two optional cmd flags: `graffiti` / `recipient`
 

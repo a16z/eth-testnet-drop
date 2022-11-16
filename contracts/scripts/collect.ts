@@ -32,7 +32,7 @@ export async function collect() {
 
     // Merkle proof
     if (!existsSync(args.leaves_file)) {
-        console.error(`${args.leaves_file} does not exist.`)
+        console.error(`${args.leaves_file} does not exist.`);
         exit(-1);
     }
     let addresses = readFileSync(args.leaves_file).toString().split(",");

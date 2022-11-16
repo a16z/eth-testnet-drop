@@ -32,6 +32,8 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "ethers": "^5.7.2",
+    "ethers-gcp-kms-signer": "^1.1.4",
     "ts-command-line-args": "^2.3.1"
   }
 }
