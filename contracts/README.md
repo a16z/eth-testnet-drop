@@ -27,3 +27,6 @@ There are two optional cmd flags: `graffiti` / `recipient`
 3. Add `Anvil 8500` and `Anvil 8501` networks to wallet
 ![networks](imgs/MetaMaskSetup.png)
 4. `yarn start-local` – spins up 2 anvil nodes at 8500 and 8501 for testing dual network.
+
+## generate tree
+- `ts-node ./scripts/generate-tree`

@@ -214,7 +214,7 @@ const ClaimValidity = (props: {address: string}) => {
             return (<ClaimInteraction proof={proof} leaf={`0x${leaf.toString('hex')}`} setError={setTxError} setTxHash={setTxHash} />)
         }
     } else {
-        return (<div>Loading</div>)
+        return (<div className="p-4">Loading...</div>)
     }
 }
 

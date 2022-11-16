@@ -57,7 +57,7 @@ const LocalConfig: Config = {
             BlockExplorerUrl: "https://not-real-explorer.io/"
         }
     ],
-    MerkleTreePath: "/local-mt.txt",
+    MerkleTreePath: "/big-local-mt.txt",
     ShowGraffiti: true,
     GraffitiMaxBlocks: 1000
 }

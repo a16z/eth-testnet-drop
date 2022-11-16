@@ -13,7 +13,7 @@ import { readFileSync } from "fs";
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-let DEAFULT_LEAVES_FILE = "local-mt.txt"; // File to read dev leaves from
+let DEFAULT_LEAVES_FILE = "big-local-mt.txt"; // File to read dev leaves from
 let DEV_START_BALANCE = utils.parseEther("10"); // Starting balance of each wallet in DEV_WALLETS environment variable
 let CLAIM_AMOUNT = utils.parseEther("1.1"); // ETH amount per claim
 let DEPOSIT_AMOUNT = utils.parseEther("100"); // Amount to deposit in the contract
@@ -39,6 +39,7 @@ deployDevDual().then(() => {}).catch(err => console.error(err))
 export async function deployDevDual() {
     let processes = deployAnvils();
     console.log(`Running ${Configs.length} anvils.`)
+    await delay(1000); // Wait for anvils
     
     // Pull dev wallet address
     let addressRaw = process.env.DEV_WALLETS;
@@ -48,10 +49,6 @@ export async function deployDevDual() {
     }
 
     let devAddresses = addressRaw!.split(",");
-
-
-    await delay(1000);
-
 
     chainSetup(devAddresses).catch(err => {
         console.error("Chain setup failed: ", err);
@@ -104,7 +101,7 @@ async function chainSetup(devAddresses: string[]) {
 async function deployCollector(signer: Signer): Promise<string> {
         let factory = new Collector__factory(signer);
 
-        let leaves = readFileSync(DEAFULT_LEAVES_FILE).toString().split(",");
+        let leaves = readFileSync(DEFAULT_LEAVES_FILE).toString().split(",");
 
         let merkleTree = new MerkleTree(leaves, keccak256, { hashLeaves: true, sortPairs: true });
         let root = merkleTree.getHexRoot();
