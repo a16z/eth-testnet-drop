@@ -9,7 +9,8 @@
 		"start-local-backend": "cd contracts && yarn start-local",
 		"build-client": "cd client && yarn build",
 		"build-client-raw": "cd client && yarn build-raw",
-		"deploy-amplify": "cd client && yarn deploy",
+		"deploy-firebase": "cd client && yarn deploy",
+		"prod-serve": "cd client && yarn serve",
 		"test": "cd contracts && yarn test"
 	}
 }
