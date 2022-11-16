@@ -127,7 +127,7 @@ const ClaimValidity = (props: {address: string}) => {
                                 <XCircleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true"></XCircleIcon>
                             </div>
                             <div className="ml-3">
-                                <h3 className="text-yellow-800">{ props.address } – Ineligible. No contracts deployed from this address to Goerli. </h3>
+                                <h3 className="text-yellow-800">{ shortenAddress(props.address) } – Ineligible. No contracts deployed from this address to { chainConfig.HumanNetworkName }. </h3>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ const ClaimValidity = (props: {address: string}) => {
                                 <XCircleIcon className="h-5 w-5 text-yellow-400" aria-hidden="true"></XCircleIcon>
                             </div>
                             <div className="ml-3">
-                                <h3 className="text-yellow-800">{ props.address } – Already claimed. </h3>
+                                <h3 className="text-yellow-800">{ shortenAddress(props.address) } – Already claimed. </h3>
                             </div>
                         </div>
                     </div>
@@ -300,6 +300,10 @@ const FreeInput = () => {
             }
         </div>
     )
+}
+
+function shortenAddress(addr: string): string {
+    return addr.slice(0, 12);
 }
 
 
