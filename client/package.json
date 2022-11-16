@@ -38,7 +38,7 @@
     "eject": "react-scripts eject",
     "update": "cp ../contracts/mt.txt ./public && cp ../contracts/local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
     "serve": "yarn build && firebase serve",
-    "deploy": "firebase deploy"
+    "deploy": "yarn build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [
