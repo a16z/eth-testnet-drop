@@ -30,6 +30,8 @@ contracts/artifacts
 contracts/cache
 contracts/typechain-types
 
+testnet*
+
 # local-mt.txt
 # mt.txt
 
