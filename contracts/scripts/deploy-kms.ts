@@ -45,6 +45,7 @@ export async function deployKms() {
     let deploy = await factory.deploy(root, args.amount);
     await deploy.deployTransaction.wait();
     console.log(`Deployed to ${deploy.address}`);
+    console.log(`Verify on etherscan: npx hardhat verify --network ${args.network} ${deploy.address} ${root} ${args.amount}`)
 }
 
 deployKms().then().catch(err => {
