@@ -11,14 +11,14 @@ import getKmsCredentials from "../utils/kms";
 
 interface Args {
     network: string,
-    amount: number,
+    amount: string,
     leaves_file: string
 }
 
 export async function deployKms() {
     const args = parse<Args>({
         network: String,
-        amount: Number,
+        amount: String,
         leaves_file: String,
     });
 
