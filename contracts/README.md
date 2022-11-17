@@ -25,8 +25,10 @@ There are two optional cmd flags: `graffiti` / `recipient`
 1. Set up environment variable for `DEV_WALLETS` (comma separated list of public keys)
 2. Fill out `local-mt.txt` with some public keys for claiming
 3. Add `Anvil 8500` and `Anvil 8501` networks to wallet
-![networks](imgs/MetaMaskSetup.png)
 4. `yarn start-local` – spins up 2 anvil nodes at 8500 and 8501 for testing dual network.
+
+## metamask local net setup
+![networks](imgs/MetaMaskSetup.png)
 
 ## generate tree
 - `ts-node ./scripts/generate-tree`
