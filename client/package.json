@@ -17,6 +17,7 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/three": "^0.144.0",
+    "Buffer": "^0.0.0",
     "buffer": "^6.0.3",
     "ethers": "^5.7.2",
     "lamina": "^1.1.23",

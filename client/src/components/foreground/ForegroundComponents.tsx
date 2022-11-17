@@ -20,9 +20,8 @@ import { utils } from "ethers";
 import { useEffect, useState } from "react";
 import CurrentConfig from "../../config";
 import CollectorAbi from "../../ABIs/Collector.json";
-import keccak256 from "keccak256";
-import MerkleTree from "merkletreejs";
 import { ConfigForChainId } from "../../utils/utils";
+import { MerkleProof } from "./MerkleProof";
 
 export const Connecting = () => {
 	const { address: walletAddress, isConnected } = useAccount();
@@ -77,12 +76,17 @@ const ClaimValidity = (props: { address: string }) => {
 	let [txHash, setTxHash] = useState("");
 	let [txError, setTxError] = useState("");
 
+	let [proof, setProof] = useState({} as MerkleProof);
+	let [calculatingProof, setCalculatingProof] = useState(false);
+
 	let { disconnect } = useDisconnect();
 	let { switchNetwork } = useSwitchNetwork();
 
 	let { chain } = useNetwork();
 
 	let chainConfig = ConfigForChainId(chain!.id)!;
+
+
 
 	let claimQuery = useContractRead({
 		address: chainConfig.ContractAddr,
@@ -121,6 +125,20 @@ const ClaimValidity = (props: { address: string }) => {
 
 	let loadingComplete =
 		leaves.length > 0 && claimedLoading === false && rootQueryLoading === false;
+
+	// Kick off webworker to calculate proof in backgroudn thread
+	useEffect(() => {
+		if (leaves.length > 0 && props.address !== "" && !calculatingProof && proof.proof === undefined) {
+			setCalculatingProof(true);
+			let worker = new Worker(new URL("createMerkleProof", import.meta.url));
+			worker.postMessage({address: props.address, leaves: leaves })
+			worker.onmessage = ({ data: { resultProof } }) => {
+				console.log("result proof", resultProof);
+				setCalculatingProof(false);
+				setProof(resultProof);
+			};
+		}
+	}, [leaves, props.address])
 
 	let currentChainId = chainConfig.Chain.id;
 	let switchChain = CurrentConfig.Chains.find(
@@ -199,9 +217,8 @@ const ClaimValidity = (props: { address: string }) => {
 					</button>
 				</div>
 			);
-		} else {
-			// Valid claimaint
-			if (txHash !== "") {
+		} else { // Valid claimant
+			if (txHash !== "") { // If we have a hash, tx has been sent, display it
 				let txUrl = `${chainConfig.BlockExplorerUrl}${txHash}`;
 
 				return (
@@ -244,7 +261,7 @@ const ClaimValidity = (props: { address: string }) => {
 				);
 			}
 
-			if (txError !== "") {
+			if (txError !== "") { // If we have a tx error, tx has been sent and failed, display it
 				return (
 					<div className="p-4">
 						<div className="p-2 overflow-hidden text-red-400 border border-gray-300 rounded-md bg-red-50">
@@ -254,18 +271,24 @@ const ClaimValidity = (props: { address: string }) => {
 				);
 			}
 
-			let merkleTree = new MerkleTree(leaves, keccak256, {
-				hashLeaves: true,
-				sortPairs: true,
-			});
-			let localRoot = merkleTree.getHexRoot();
-			let leaf = keccak256(props.address);
-			let proof = merkleTree.getHexProof(leaf);
+			if (calculatingProof) { // If the merkle proof is currently being calculated, display loading
+				return (
+					<Loading text={"Calculating merkle proof..."} ></Loading>
+				)
+			}
 
-			if (localRoot !== root) {
+			if (proof.proof === undefined || proof.root === undefined || proof.leaf === undefined) { // Webworker failure 
+				return (
+					<div className="p-4">
+						...
+					</div>
+				)
+			}
+
+
+			if (proof.root! !== root) {
 				// Possible if the front end and contract get out of sync (likely due to caching)
 				return (
-					<div>
 						<div className="p-4 rounded-md bg-red-50">
 							<div className="flex">
 								<div className="flex-shrink-0">
@@ -281,23 +304,22 @@ const ClaimValidity = (props: { address: string }) => {
 								</div>
 							</div>
 						</div>
-					</div>
 				);
 			}
 
-			// Valid claim! Go for it!
 
+			// Valid claim! Go for it!
 			return (
 				<ClaimInteraction
-					proof={proof}
-					leaf={`0x${leaf.toString("hex")}`}
+					proof={proof.proof!}
+					leaf={proof.leaf!}
 					setError={setTxError}
 					setTxHash={setTxHash}
 				/>
 			);
 		}
 	} else {
-		return <div className="p-4">Loading...</div>;
+		return <Loading text={"Downloading merkle leaves"}></Loading>
 	}
 };
 
@@ -423,6 +445,20 @@ const FreeInput = () => {
 		</div>
 	);
 };
+
+const Loading = (props: {text: string}) => {
+	return (
+		<div className="p-4">
+			<div className="py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center">
+				<svg role="status" className="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+					<path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+				</svg>
+				{props.text}
+			</div>
+		</div>
+	)
+}
 
 function shortenAddress(addr: string): string {
 	return addr.slice(0, 12);
