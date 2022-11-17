@@ -157,7 +157,7 @@ const ClaimValidity = (props: { address: string }) => {
 							<div className="ml-3">
 								<h3 className="text-yellow-800">
 									{shortenAddress(props.address)} – Ineligible. No contracts
-									deployed from this address to {chainConfig.HumanNetworkName}.{" "}
+									deployed from this address to Mainnet / Goerli / Sepolia.{" "}
 								</h3>
 							</div>
 						</div>
