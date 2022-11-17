@@ -57,9 +57,11 @@ const GraffitiTicker = () => {
         })
     }, [])
 
+    let speed = Math.min(1000 / messages.length, 75);
+
     return (
         <div className="fixed bottom-0 items-end w-full graffiti">
-            <Marquee gradient={false} gradientWidth={0} speed={1000 / messages.length} delay={2}>
+            <Marquee gradient={false} gradientWidth={0} speed={speed} delay={2}>
                 <div className="spacer"></div>
                 { messages.length > 0 ? <h1 className="p-1 m-2">Graffiti</h1> : "" }
                 { messages.map((msg, index) => {

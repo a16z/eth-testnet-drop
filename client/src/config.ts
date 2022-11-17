@@ -65,19 +65,19 @@ const LocalConfig: Config = {
 const ProdConfig: Config = {
 	Chains: [
 		{
-			ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
+			ContractAddr: "0x88D942e428eAE015486A6C94A8869D5e3C989415",
 			Chain: chain.goerli,
 			HumanNetworkName: "Goerli",
 			BlockExplorerUrl: "https://goerli.etherscan.io/tx/",
 		},
 		{
-			ContractAddr: "0x4c4871965c01B8f33F2773fa55167BA983C729ad",
+			ContractAddr: "0x88D942e428eAE015486A6C94A8869D5e3C989415",
 			Chain: chain.sepolia,
 			HumanNetworkName: "Sepolia",
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
 		},
 	],
-	MerkleTreePath: "/mt.txt",
+	MerkleTreePath: "/big-local-mt.txt",
 	ShowGraffiti: true,
 	GraffitiMaxBlocks: 1000,
 };
