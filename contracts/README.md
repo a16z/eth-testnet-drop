@@ -1,14 +1,15 @@
-## compile
+# Contracts
+## Compile
 `npx hardhat compile`
 
-## test
+## Test
 `npx hardhat test`
 
-## collect using CLI
+## Collect using CLI
 *Ideally use the UI for collection, but if you'd like to use cmd, run the command below.*
 `ts-node ./scripts/collect.ts --pk=<collection private key> --rpc=<rpc for relevant chain> --contract_address=<Collector contract address> --leaves_file=<Merkle tree leaves file path>`
 
-## deploy (using gcloud KMS)
+## Deploy (using gcloud KMS)
 1. Set up environment variables for:
     - `ALCHEMY_API_KEY`
     - `GOOGLE_APPLICATION_CREDENTIALS` ([details](https://cloud.google.com/docs/authentication/application-default-credentials#GAC))
@@ -21,7 +22,7 @@
 
 There are two optional cmd flags: `graffiti` / `recipient`
 
-## dev workflow (UI testing)
+## Dev workflow (UI testing)
 1. Set up environment variable for `DEV_WALLETS` (comma separated list of public keys)
 2. Fill out `local-mt.txt` with some public keys for claiming
 3. Add `Anvil 8500` and `Anvil 8501` networks to wallet
@@ -30,5 +31,5 @@ There are two optional cmd flags: `graffiti` / `recipient`
 ## metamask local net setup
 ![networks](imgs/MetaMaskSetup.png)
 
-## generate tree
+## Generate tree
 - `ts-node ./scripts/generate-tree`
