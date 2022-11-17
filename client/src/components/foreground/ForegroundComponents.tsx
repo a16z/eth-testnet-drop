@@ -132,11 +132,6 @@ const ClaimValidity = (props: { address: string }) => {
 		setTxHash("");
 	};
 
-	// Options to display:
-	// 1. Ineligible (not in merkle leaves)
-	// 2. Already claimed
-	// 3. Claimable
-
 	// Wait for connection and valid address
 	if (loadingComplete) {
 		let inSet =
@@ -376,10 +371,11 @@ const FreeInput = () => {
 			});
 	}, []);
 
-	let inSet =
-		leaves.findIndex((leaf) => leaf.toLowerCase() === address.toLowerCase()) !==
-		-1;
-	let eligable = inSet;
+	let eligable = false;
+	if (addressValid) {
+		// Only check if the address is valid
+		eligable = leaves.findIndex((leaf) => leaf.toLowerCase() === address.toLowerCase()) !== -1;
+	}
 	return (
 		<div>
 			<div className="relative">
