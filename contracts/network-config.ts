@@ -1,10 +1,19 @@
 import { exit } from "process";
 
+import 'dotenv/config';
+
 let alchemyApiKey = process.env.ALCHEMY_API_KEY;
 if (alchemyApiKey) {
   alchemyApiKey = alchemyApiKey!;
 } else {
   console.error("ALCHEMY_API_KEY not set.");
+  exit(-1);
+}
+let infuraApiKey= process.env.INFURA_API_KEY;
+if (infuraApiKey) {
+  infuraApiKey = infuraApiKey!;
+} else {
+  console.error("INFURA_API_KEY not set.");
   exit(-1);
 }
 
@@ -29,7 +38,7 @@ let networks: Network[] =
     },
     {
         name: "sepolia",
-        rpcUrl: "https://rpc.sepolia.dev"
+        rpcUrl: `https://sepolia.infura.io/v3/${infuraApiKey}`
     }
 ]
 
