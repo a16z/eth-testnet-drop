@@ -133,7 +133,6 @@ const ClaimValidity = (props: { address: string }) => {
 			let worker = new Worker(new URL("createMerkleProof", import.meta.url));
 			worker.postMessage({address: props.address, leaves: leaves })
 			worker.onmessage = ({ data: { resultProof } }) => {
-				console.log("result proof", resultProof);
 				setCalculatingProof(false);
 				setProof(resultProof);
 			};
