@@ -24,8 +24,8 @@ export async function collect() {
         leaves_file: String,
         contract_address: String,
         graffiti:  {type: String, optional: true},
-        recipient: { type: String, optional: true},
-        loop: { type: Number, optional: true}
+        recipient: {type: String, optional: true},
+        loop: {type: Number, optional: true}
     });
 
     // Connect ethers
