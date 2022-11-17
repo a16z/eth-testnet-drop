@@ -22,7 +22,7 @@ contract Collector is Ownable {
         string memory graffiti,
         address recipient
     ) public returns (bool) { 
-        require(claimed[msg.sender] == false, "Already claimed");
+        // require(claimed[msg.sender] == false, "Already claimed");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(proof, root, leaf), "Failed merkle proof");

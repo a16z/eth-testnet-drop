@@ -13,6 +13,7 @@ interface Args {
     contract_address: string;
     graffiti?: string;
     recipient?: string;
+    loop?: number;
 }
 
 export async function collect() {
@@ -23,7 +24,8 @@ export async function collect() {
         leaves_file: String,
         contract_address: String,
         graffiti:  {type: String, optional: true},
-        recipient: { type: String, optional: true}
+        recipient: { type: String, optional: true},
+        loop: { type: Number, optional: true}
     });
 
     // Connect ethers
@@ -39,13 +41,17 @@ export async function collect() {
     let merkleTree = new MerkleTree(addresses, keccak256, { hashLeaves: true, sortPairs: true});
     let proof = merkleTree.getHexProof(keccak256(wallet.address));
 
-    // Collect
-    let contract = new Contract(args.contract_address, CollectorAbi, wallet);
-    let graffiti = args.graffiti ? args.graffiti! : "";
-    let recipient = args.recipient ? args.recipient! : wallet.address;
-    let tx = await contract.collect(proof, graffiti, recipient);
-    let result = await tx.wait();
-    console.log(`Tx sent: ${result.transactionHash}`);
+    let loops = args.loop === undefined ? 1 : args.loop!;
+
+    for (let i = 0; i < loops; i++) {
+        // Collect
+        let contract = new Contract(args.contract_address, CollectorAbi, wallet);
+        let graffiti = args.graffiti ? args.graffiti! : "";
+        let recipient = args.recipient ? args.recipient! : wallet.address;
+        let tx = await contract.collect(proof, graffiti, recipient);
+        let result = await tx.wait();
+        console.log(`Tx sent: ${result.transactionHash}`);
+    }
 }
 
 collect()

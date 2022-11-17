@@ -58,13 +58,13 @@ const GraffitiTicker = () => {
     }, [])
 
     return (
-        <div className="fixed bottom-0 graffiti w-full items-end">
-            <Marquee gradient={false} gradientWidth={0} speed={50} delay={2}>
+        <div className="fixed bottom-0 items-end w-full graffiti">
+            <Marquee gradient={false} gradientWidth={0} speed={1000 / messages.length} delay={2}>
                 <div className="spacer"></div>
-                { messages.length > 0 ? <h1 className="m-2 p-1">Graffiti</h1> : "" }
+                { messages.length > 0 ? <h1 className="p-1 m-2">Graffiti</h1> : "" }
                 { messages.map((msg, index) => {
                     return (
-                        <div className="graffiti-blob m-2 p-1 border rounded-md drop-shadow mx-4" key={index}>
+                        <div className="p-1 m-2 mx-4 border rounded-md graffiti-blob drop-shadow" key={index}>
                             <span className="text-xs bg-blue-300 rounded-md border border-gray-300 p-0.5">{ shortenAddress(msg.address) }</span>
                             <span>: { msg.message } </span>
                         </div>
