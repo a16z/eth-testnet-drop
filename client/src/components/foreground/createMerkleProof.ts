@@ -6,6 +6,7 @@ import { Buffer } from "buffer";
 // @ts-ignore for keccak256
 self.Buffer = Buffer;
 
+// merkleProof as a webworker such that it can be threaded
 self.onmessage = ({ data: { address, leaves } }) => {
 	let merkleTree = new MerkleTree(leaves, keccak256, {
 		hashLeaves: true,
