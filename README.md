@@ -13,7 +13,7 @@ Repo contains a one-time claim for testnet tokens. The contract uses a merkle pr
 
 ## Dev workflow
 1. Set up `DEV_WALLETS` environment variable – comma separated list of wallets to prepopulate with test ETH.
-2. Fill out `./contracts/local-mt.txt` with addresses for claiming.
+2. Fill out `./contracts/data/local-mt.txt` with addresses for claiming.
 3. Start local nodes: `yarn start-local-backend`
 4. Start local client: `yarn start-local-client`
 5. Add the local testnets to wallet (as described in `contracts/README.md`).

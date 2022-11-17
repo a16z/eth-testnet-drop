@@ -13,7 +13,7 @@ import { readFileSync } from "fs";
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-let DEFAULT_LEAVES_FILE = "big-local-mt.txt"; // File to read dev leaves from
+let DEFAULT_LEAVES_FILE = "./data/big-local-mt.txt"; // File to read dev leaves from
 let DEV_START_BALANCE = utils.parseEther("100"); // Starting balance of each wallet in DEV_WALLETS environment variable
 let CLAIM_AMOUNT = utils.parseEther("0.001"); // ETH amount per claim
 let DEPOSIT_AMOUNT = utils.parseEther("1000"); // Amount to deposit in the contract

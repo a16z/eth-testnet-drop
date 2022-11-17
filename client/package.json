@@ -37,7 +37,7 @@
     "build": "yarn update && react-scripts build",
     "build-raw": "react-scripts build",
     "eject": "react-scripts eject",
-    "update": "cp ../contracts/mt.txt ./public && cp ../contracts/local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
+    "update": "cp ../contracts/data/mt.txt ./public && cp ../contracts/data/local-mt.txt ./public && cp ../contracts/data/big-local-mt.txt ./public && cp ../contracts/artifacts/contracts/Collector.sol/Collector.json ./src/ABIs/",
     "serve": "yarn build && firebase serve",
     "deploy": "yarn build && firebase deploy"
   },
