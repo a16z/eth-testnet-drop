@@ -128,7 +128,7 @@ const Background = (props: {children?: any}) => {
           <directionalLight position={[4, 10, 4]} intensity={2} color="green"/>
           <directionalLight position={[-4, 10, 4]} intensity={2} color="blue"/>
           <Suspense fallback={null}>
-            <Environment preset="warehouse" />
+            <Environment files="/adamsbridge.hdr" />
             <Physics gravity={[0, 0, 0]}>
               <InstancedClump />
               <Collisions mousePos={coords} />
