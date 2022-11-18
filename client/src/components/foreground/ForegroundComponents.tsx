@@ -196,7 +196,7 @@ const ClaimValidity = (props: { address: string }) => {
 							</div>
 							<div className="ml-3">
 								<h3 className="text-yellow-800">
-									{shortenAddress(props.address)} – Already claimed.{" "}
+									{shortenAddress(props.address)} – Already claimed on { chainConfig.HumanNetworkName }.{" "}
 								</h3>
 							</div>
 						</div>
