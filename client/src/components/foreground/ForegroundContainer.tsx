@@ -17,7 +17,7 @@ const ForegroundContainer = () => {
 						</h1>
 						<div className="p-4 text-xs text-center text-gray-700 md:text-base">
 							Addresses that have deployed one or more contracts on Mainnet /
-							Goerli / Sepolia before November 4, 2022 are eligible for a{" "}
+							Goerli / Sepolia before November 15, 2022 are eligible for a{" "}
 							<span className="underline">one time</span> claim of 10 
 							Goerli and Sepolia test ETH.
 						</div>
