@@ -26,63 +26,6 @@ const diamondMaterial = new MeshStandardMaterial(
       side: DoubleSide
   })
 
-// Non-instanced version
-// const diamonds = [...Array(NUM)].map(() => {
-//   let size = SIZES[Math.floor(Math.random() * SIZES.length)];
-//   return { 
-//     args: size, 
-//     mass: size * 1.5, 
-//     position: [
-//       Math.random() * SPAWN_SPACE[0] - SPAWN_OFFSET[0], 
-//       Math.random() * SPAWN_SPACE[1] - SPAWN_OFFSET[1], 
-//       0
-//     ],
-//     rotation: [
-//       2 * Math.PI * Math.random(), 
-//       2 * Math.PI * Math.random(), 
-//       2 * Math.PI * Math.random(),
-//     ],
-//     angularDamping: 0.2, 
-//     linearDamping: 0.95 
-//   }
-// })
-
-// function Diamond(
-//   { center = new Vector3(), ...props }
-//   ) {
-//   const ethGeometryModel = useGLTF("/ethereum_3d_logo.glb")
-//   // Create bounding box
-//   const [ref, api] = useCompoundBody(() => ({
-//     ...props,
-//     shapes: [
-//       { 
-//         type: "Sphere", 
-//         position: [0, 0, 0.001], // Cause some spin
-//         args: [props.args * BOUNDING_SPHERE_SCALAR], 
-//       }
-//     ],
-//   }))
-
-//   // Force towards center
-//   useEffect(() => api.position.subscribe(
-//     (p) => {
-//       api.applyForce(center.set(p[0], p[1], p[2]).normalize().multiplyScalar(-props.args * FORCE_MULTIPLIER).toArray()
-//     , [0, 0, 0])
-//   }))
-
-//   return (
-//       <mesh 
-//         ref={ref}
-//         dispose={null}
-//         castShadow 
-//         scale={props.args} 
-//         position={[0, 0, 0]} 
-//         geometry={ethGeometry}
-//         material={diamondMaterial} 
-//         rotation={[0, Math.PI / 2, Math.PI / 2]}></mesh>
-//   )
-// }
-
 function InstancedClump({ mat = new Matrix4(), vec = new Vector3(), ...props }) {
   const [ref, api] = useCompoundBody(() => 
     { 
@@ -121,7 +64,6 @@ function InstancedClump({ mat = new Matrix4(), vec = new Vector3(), ...props }) 
   return (
     <instancedMesh ref={ref} castShadow receiveShadow args={[null, null, NUM]} geometry={ethGeometry} material={diamondMaterial}></instancedMesh>
     )
-
 }
 
 function Collisions(props: {mousePos?: any}) {
@@ -174,7 +116,9 @@ const Background = (props: {children?: any}) => {
           shadows
           dpr={1.5}
           camera={{ position: [0, 0, 20], fov: 35, near: 10, far: 40 }}>
-          <Perf position={'bottom-right'} />
+
+          {/* Performance monitoring */}
+          {/* <Perf position={'bottom-right'} /> */}
 
           <ambientLight intensity={0.5} />
           <spotLight position={[20, 20, 25]} penumbra={1} angle={0.2} color="white" castShadow shadow-mapSize={[512, 512]} />
@@ -188,7 +132,6 @@ const Background = (props: {children?: any}) => {
             <Physics gravity={[0, 0, 0]}>
               <InstancedClump />
               <Collisions mousePos={coords} />
-              {/* {diamonds.map((props, i) => <Diamond key={i} {...props} />) } */}
             </Physics>
             <Sky></Sky>
           </Suspense>
