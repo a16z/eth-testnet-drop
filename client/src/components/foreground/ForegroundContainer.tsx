@@ -18,7 +18,7 @@ const ForegroundContainer = () => {
 						<div className="p-4 text-xs text-center text-gray-700 md:text-base">
 							Addresses that have deployed one or more contracts on Mainnet /
 							Goerli / Sepolia before November 4, 2022 are eligible for a{" "}
-							<span className="underline">one time</span> claim of X (tbd)
+							<span className="underline">one time</span> claim of 10 
 							Goerli and Sepolia test ETH.
 						</div>
 						<div className="p-4 text-xs text-center text-gray-700 border-t md:text-base">
@@ -36,7 +36,7 @@ const ForegroundContainer = () => {
 								className="text-blue-600 hover:underline"
 								href="https://twitter.com/TimBeiko"
 							>
-								Tim Beiko (TBD)
+								Tim Beiko
 							</a>
 						</div>
 						<div className="flex justify-center p-4 text-xs text-center text-gray-700 border-t md:text-base">

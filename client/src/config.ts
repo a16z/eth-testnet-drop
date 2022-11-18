@@ -65,13 +65,13 @@ const LocalConfig: Config = {
 const ProdConfig: Config = {
 	Chains: [
 		{
-			ContractAddr: "0x0614e43d90EEBF79b591dCD12ef171e404d31a09",
+			ContractAddr: "0x939c501127eaFD89E1e3F8BcCe3398d9C80c18D6",
 			Chain: chain.goerli,
 			HumanNetworkName: "Goerli",
 			BlockExplorerUrl: "https://goerli.etherscan.io/tx/",
 		},
 		{
-			ContractAddr: "0x0614e43d90EEBF79b591dCD12ef171e404d31a09",
+			ContractAddr: "0x939c501127eaFD89E1e3F8BcCe3398d9C80c18D6",
 			Chain: chain.sepolia,
 			HumanNetworkName: "Sepolia",
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
