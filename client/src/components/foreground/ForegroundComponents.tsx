@@ -86,8 +86,6 @@ const ClaimValidity = (props: { address: string }) => {
 
 	let chainConfig = ConfigForChainId(chain!.id)!;
 
-
-
 	let claimQuery = useContractRead({
 		address: chainConfig.ContractAddr,
 		abi: CollectorAbi.abi,
@@ -145,8 +143,8 @@ const ClaimValidity = (props: { address: string }) => {
 	)!;
 
 	let switchChains = () => {
-		switchNetwork?.(switchChain.Chain.id);
 		setTxHash("");
+		switchNetwork?.(switchChain.Chain.id);
 	};
 
 	// Wait for connection and valid address

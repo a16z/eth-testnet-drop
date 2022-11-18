@@ -60,7 +60,7 @@ function deployAnvils() {
     // Anvil info: https://book.getfoundry.sh/reference/anvil/
     let childProcesses: child.ChildProcess[] = [];
     Configs.forEach((config, index) => {
-        let process = child.exec(`anvil --chain-id ${config.chain_id} --port ${config.port}`, 
+        let process = child.exec(`anvil --chain-id ${config.chain_id} --port ${config.port} --block-time 10`, 
             (error, stdout, stderr) => {
                 console.log(`Anvil ${index} result`, error, stdout, stderr)
             });
