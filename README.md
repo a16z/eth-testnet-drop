@@ -1,4 +1,5 @@
 # Testnet Claim 
+[![Telegram](https://img.shields.io/badge/Telegram-join%20chat-0088cc.svg)](https://t.me/ethereumtestnettokenclaim)
 ![UI](imgs/ui.png)
 Repo contains a one-time claim for testnet tokens. The contract uses a merkle proof for set inclusion. The associated client guides the user through claiming on multiple networks and has some neat background physics.
 
