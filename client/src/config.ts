@@ -57,7 +57,7 @@ const LocalConfig: Config = {
 			BlockExplorerUrl: "https://not-real-explorer.io/",
 		},
 	],
-	MerkleTreePath: "/big-local-mt.txt",
+	MerkleTreePath: "/combined_qualifying_adddresses_Nov15.txt",
 	ShowGraffiti: true,
 	GraffitiMaxBlocks: 1000,
 };
@@ -65,19 +65,19 @@ const LocalConfig: Config = {
 const ProdConfig: Config = {
 	Chains: [
 		{
-			ContractAddr: "0x939c501127eaFD89E1e3F8BcCe3398d9C80c18D6",
+			ContractAddr: "0xc638f625aC0369d56D55106affbD5b83872Db971",
 			Chain: chain.goerli,
 			HumanNetworkName: "Goerli",
 			BlockExplorerUrl: "https://goerli.etherscan.io/tx/",
 		},
 		{
-			ContractAddr: "0x939c501127eaFD89E1e3F8BcCe3398d9C80c18D6",
+			ContractAddr: "0x4ed9c70E9A5C6a116365EB8A9e2cf442dECA71C7",
 			Chain: chain.sepolia,
 			HumanNetworkName: "Sepolia",
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
 		},
 	],
-	MerkleTreePath: "/big-local-mt.txt",
+	MerkleTreePath: "/combined_qualifying_adddresses_Nov15.txt",
 	ShowGraffiti: true,
 	GraffitiMaxBlocks: 1000,
 };
