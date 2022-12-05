@@ -8,7 +8,7 @@
 import { readFileSync, writeFileSync } from "fs";
 
 let IN_FILES = ["../queries/goerli_qualifying_addresses_all_Nov15.csv", "../queries/sepolia_qualifying_addresses_all_Nov15.csv"];
-let OUT_FILE = "../queries/combined_qualifying_adddresses_Nov15.txt";
+let OUT_FILE = "../queries/combined_qualifying_addresses_Nov15.txt";
 
 let uniqueAddrs = new Set<string>();
 for (let inFile of IN_FILES) {

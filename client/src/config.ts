@@ -57,7 +57,7 @@ const LocalConfig: Config = {
 			BlockExplorerUrl: "https://not-real-explorer.io/",
 		},
 	],
-	MerkleTreePath: "/combined_qualifying_adddresses_Nov15.txt",
+	MerkleTreePath: "/combined_qualifying_addresses_Nov15.txt",
 	ShowGraffiti: true,
 	GraffitiMaxBlocks: 1000,
 };
@@ -77,7 +77,7 @@ const ProdConfig: Config = {
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
 		},
 	],
-	MerkleTreePath: "/combined_qualifying_adddresses_Nov15.txt",
+	MerkleTreePath: "/combined_qualifying_addresses_Nov15.txt",
 	ShowGraffiti: true,
 	GraffitiMaxBlocks: 1000,
 };
