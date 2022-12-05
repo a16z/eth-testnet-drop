@@ -10,13 +10,6 @@ self.Buffer = Buffer;
 
 // merkleProof as a webworker such that it can be threaded
 self.onmessage = ({ data: { address, leaves } }) => {
-	console.log(address)
-	for (let leaf of leaves) {
-		if (!utils.isAddress(leaf)) {
-			console.error("NOT ADDR ", leaf)
-		}
-	}
-	utils.isAddress(leaves)
 	let merkleTree = new MerkleTree(leaves, keccak256, {
 		hashLeaves: true,
 		sortPairs: true,
