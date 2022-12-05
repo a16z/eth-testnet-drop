@@ -45,6 +45,5 @@ contract Collector is Ownable {
         payable(address(msg.sender)).transfer(amount);
     }
 
-    // To recieve ETH
     receive() external payable {}
 }
