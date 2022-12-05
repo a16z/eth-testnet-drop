@@ -18,11 +18,6 @@ for (let inFile of IN_FILES) {
     console.log(`${addresses.length} addresses for ${inFile}`);
 }
 
-// Test addrs
-uniqueAddrs.add("0xDE66441e351c04a7A439517dd2F9f7E9C2B24137");
-uniqueAddrs.add("0x5D5857779BC50cc3d25C9a533eEfA7BBea0e9b82");
-
-
 let outStr = ""
 Array.from(uniqueAddrs).sort().forEach((address, index) => {
     if (index == uniqueAddrs.size - 1) {
