@@ -11,6 +11,7 @@
 
 ## Collect using CLI
 *Ideally use the UI for collection, but if you'd like to use cmd, run the command below.*
+
 `ts-node ./scripts/collect.ts --pk=<collection private key> --rpc=<rpc for relevant chain> --contract_address=<Collector contract address> --leaves_file=<Merkle tree leaves file path>`
 
 ## Deploy (using gcloud KMS)
