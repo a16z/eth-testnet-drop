@@ -1,5 +1,5 @@
 import { GcpKmsSigner } from "ethers-gcp-kms-signer";
-import { ContractFactory, providers } from "ethers";
+import { ContractFactory, providers, utils } from "ethers";
 import { exit } from "process";
 import { parse } from "ts-command-line-args";
 import NetworkConfig from "../network-config";
@@ -42,10 +42,11 @@ export async function deployKms() {
     let merkleTree = new MerkleTree(addresses, keccak256, { hashLeaves: true, sortPairs: true });
     let root = merkleTree.getHexRoot();
     let factory = new ContractFactory(CollectorAbi, CollectorBytecode, signer);
-    let deploy = await factory.deploy(root, args.amount);
+    let amount = utils.parseEther(args.amount);
+    let deploy = await factory.deploy(root, amount);
     await deploy.deployTransaction.wait();
     console.log(`Deployed to ${deploy.address}`);
-    console.log(`Verify on etherscan: npx hardhat verify --network ${args.network} ${deploy.address} ${root} ${args.amount}`)
+    console.log(`Verify on etherscan: npx hardhat verify --network ${args.network} ${deploy.address} ${root} ${amount.toString()}`)
 }
 
 deployKms().then().catch(err => {

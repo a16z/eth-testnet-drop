@@ -27,3 +27,33 @@ export function generateSaveTree(
 
     return allAddresses;
 }
+
+export function chunkItems<T>(items: T[], size: number): T[][] {
+  return items.reduce((chunks: T[][], item: T, index) => {
+    const chunk = Math.floor(index / size);
+    chunks[chunk] = ([] as T[]).concat(chunks[chunk] || [], item);
+    return chunks;
+    }, []);
+}
+
+export function diffSetsSorted(superset: string[], subset: string[]): string[] {
+    if (subset.length == 0) return superset;
+
+    let result: string[]  = [];
+    let subI = 0;
+    let superI = 0;
+    while (superI < superset.length) {
+        let superItem = superset[superI];
+        let subItem = subset[Math.min(subI, subset.length - 1)];
+
+        if (superItem.toLowerCase() === subItem.toLowerCase()) {
+            superI++;
+            subI++;
+        } else {
+            result.push(superItem);
+            superI++;
+        }
+    }
+
+    return result;
+}
