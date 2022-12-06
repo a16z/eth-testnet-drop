@@ -97,6 +97,11 @@ a {
   cursor: auto;
 }
 
+.text-xs {
+  font-family: "Space Grotesk", sans-serif;
+  
+}
+
 .background-box {
   position: relative;
 
