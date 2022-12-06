@@ -25,9 +25,9 @@ const ForegroundContainer = () => {
 							Goerli ETH supplied by{" "}
 							<a
 								className="text-blue-600 hover:underline"
-								href="https://chainsafe.io/"
+								href="https://github.com/q9f"
 							>
-								ChainSafe
+								Afri Schoedon
 							</a>
 						</div>
 						<div className="p-4 text-xs text-center text-gray-700 border-t md:text-base">
