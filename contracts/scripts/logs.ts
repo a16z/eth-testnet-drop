@@ -20,6 +20,7 @@ const args = parse<Args>({
     chunk_size: Number,
 });
 
+
 let logger = createLogger({
     transports: [
         new transports.Console,
@@ -37,6 +38,12 @@ let logger = createLogger({
     ),
 })
 
+let rpcUrl = NetworkConfig.getRpc(args.network);
+if (rpcUrl === undefined) {
+    logger.error(`Could not find config for ${args.network}`);
+    exit(-1);
+}
+
 interface CollectionEvent {
     address: string,
     message: string,
@@ -45,22 +52,21 @@ interface CollectionEvent {
     tx: string,
 }
 
-async function main() {
-    let rpcUrl = NetworkConfig.getRpc(args.network);
-    if (rpcUrl === undefined) {
-        logger.error(`Could not find config for ${args.network}`);
-        exit(-1);
-    }
 
+getCollectionEvents(args.address, rpcUrl, args.from_block, args.chunk_size)
+    .then(() => logger.info("Completed."))
+    .catch(err => logger.error(err))
+
+async function getCollectionEvents(collectorAddr: string, rpcUrl: string, fromBlock: number, chunkSize: number) { 
     let provider = new providers.JsonRpcProvider(rpcUrl);
 
-    let contract = new Contract(args.address, CollectorAbi, provider);
+    let contract = new Contract(collectorAddr, CollectorAbi, provider);
     let filter = contract.filters.Claim();
     let allCollectionEvents: CollectionEvent[] = [];
 
     let currentBlock = await provider.getBlockNumber();
-    for (let from = args.from_block; from <= currentBlock; from += args.chunk_size) {
-        let to = Math.min(from + args.chunk_size, currentBlock - 10);
+    for (let from = fromBlock; from <= currentBlock; from += chunkSize) {
+        let to = Math.min(from + chunkSize, currentBlock - 10);
         logger.info(`Querying from ${from} -> ${to}`);
         let events = await contract.queryFilter(filter, from, to);
 
@@ -79,13 +85,9 @@ async function main() {
         allCollectionEvents = allCollectionEvents.concat(collectionEvents);
     }
 
-    logger.info(`Found ${allCollectionEvents.length} items from ${args.from_block} -> ${currentBlock - 10} on ${args.network}.`);
+    logger.info(`Found ${allCollectionEvents.length} items from ${fromBlock} -> ${currentBlock - 10} on ${rpcUrl}.`);
 
     for (let collectionEvt of allCollectionEvents) {
         logger.info(`[${collectionEvt.timestamp} | ${collectionEvt.address}]: ${collectionEvt.message}`);
     }
 }
-
-main()
-    .then(() => logger.info("Completed."))
-    .catch(err => logger.error(err))
