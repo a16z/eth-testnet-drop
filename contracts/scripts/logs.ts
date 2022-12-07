@@ -52,7 +52,6 @@ interface CollectionEvent {
     tx: string,
 }
 
-
 getCollectionEvents(args.address, rpcUrl, args.from_block, args.chunk_size)
     .then(() => logger.info("Completed."))
     .catch(err => logger.error(err))

@@ -1,7 +1,10 @@
+import { useState } from "react";
+import { Info } from "../Info";
 import Logos from "../Logos";
 import { Connecting } from "./ForegroundComponents";
 
 const ForegroundContainer = () => {
+	let [ showStats, setShowStats ] = useState(false);
 	window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
 
 	return (
@@ -70,11 +73,13 @@ const ForegroundContainer = () => {
 					</li>
 
 					<li className="overflow-hidden rounded-md shadow-md foreground-bin">
-						<h3 className="p-4 text-base leading-6 text-gray-900 border-b md:text-large">
-							Claim
+						<h3 className="items-center p-4 text-base leading-6 text-gray-900 border-b md:text-large">
+							{ showStats ? "Stats" : "Claim"}
+							{/* TODO: Fix centering */}
+							<button type="button" onClick={() => {setShowStats(!showStats)}} className="float-right inline-block px-6 py-2.5 bg-transparent font-medium text-xs leading-tight rounded hover:bg-gray-100 active:bg-gray-200 transition duration-150 ease-in-out"> { showStats ? "Back to claim" : "Stats" }</button>
 						</h3>
 						<div className="text-sm text-center text-gray-700 md:text-base">
-							<Connecting></Connecting>
+							{ showStats ? <Info></Info> : <Connecting></Connecting>}
 						</div>
 					</li>
 

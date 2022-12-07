@@ -30,6 +30,7 @@ const Anvil8501Chain: Chain = {
 
 export interface ChainConfig {
 	ContractAddr: string;
+	ContractDeployBlock: number;
 	HumanNetworkName: string;
 	Chain: Chain;
 	BlockExplorerUrl: string;
@@ -46,12 +47,14 @@ const LocalConfig: Config = {
 	Chains: [
 		{
 			ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+			ContractDeployBlock: 0,
 			Chain: Anvil8500Chain,
 			HumanNetworkName: "Anvil8500",
 			BlockExplorerUrl: "https://not-real-explorer.io/",
 		},
 		{
 			ContractAddr: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+			ContractDeployBlock: 0,
 			Chain: Anvil8501Chain,
 			HumanNetworkName: "Anvil8501",
 			BlockExplorerUrl: "https://not-real-explorer.io/",
@@ -66,12 +69,14 @@ const ProdConfig: Config = {
 	Chains: [
 		{
 			ContractAddr: "0xc638f625aC0369d56D55106affbD5b83872Db971",
+			ContractDeployBlock: 8076460,
 			Chain: chain.goerli,
 			HumanNetworkName: "Goerli",
 			BlockExplorerUrl: "https://goerli.etherscan.io/tx/",
 		},
 		{
 			ContractAddr: "0x4ed9c70E9A5C6a116365EB8A9e2cf442dECA71C7",
+			ContractDeployBlock: 2414647,
 			Chain: chain.sepolia,
 			HumanNetworkName: "Sepolia",
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
@@ -82,7 +87,8 @@ const ProdConfig: Config = {
 	GraffitiMaxBlocks: 1000,
 };
 
-let CurrentConfig =
-	process.env.NODE_ENV === "production" ? ProdConfig : LocalConfig;
+// let CurrentConfig =
+// 	process.env.NODE_ENV === "production" ? ProdConfig : LocalConfig;
+let CurrentConfig = ProdConfig;
 
 export default CurrentConfig;

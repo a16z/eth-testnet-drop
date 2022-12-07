@@ -20,9 +20,11 @@ export async function getAllCollectionEvents(
                 let rpcUrl = chainConfig.Chain.rpcUrls.default;
                 let address = chainConfig.ContractAddr;
                 let provider = new providers.JsonRpcProvider(rpcUrl, chainId);
+
                 let currentBlock = await provider.getBlockNumber();
                 let fromBlock = currentBlock - CurrentConfig.GraffitiMaxBlocks;
                 fromBlock = fromBlock > 0 ? fromBlock : 0;
+
                 let collectionEvents: CollectionEvent[] = await getCollectionEvents(
                     address, 
                     rpcUrl, 
@@ -55,10 +57,12 @@ export async function getCollectionEvents(
     let range = currentBlock - fromBlock;
     for (let from = fromBlock; from <= currentBlock - 5; from += chunkSize) {
         let to = Math.min(from + chunkSize, currentBlock - 5);
+
         let pct = (to - fromBlock) / range;
         if (progressCallback) {
             progressCallback(pct);
         }
+
         let events = await contract.queryFilter(filter, from, to);
 
         let collectionEvents = await Promise.all(
