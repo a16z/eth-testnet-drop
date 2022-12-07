@@ -57,10 +57,10 @@ const GraffitiTicker = () => {
         })
     }, [])
 
-    let speed = Math.min(1000 / messages.length, 75);
+    let speed = window.innerWidth > 500 ? 15 : 6;
 
     return (
-        <div className="fixed bottom-0 items-end w-full graffiti">
+        <div className="fixed bottom-0 items-end w-screen graffiti">
             <Marquee gradient={false} gradientWidth={0} speed={speed} delay={2}>
                 <div className="spacer"></div>
                 { messages.length > 0 ? <h1 className="p-1 m-2">Graffiti</h1> : "" }
