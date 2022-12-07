@@ -8,7 +8,6 @@ import getKmsCredentials from "../../utils/kms";
 import { Duster, Duster__factory } from "../../typechain-types";
 import { chunkItems, diffSetsSorted } from "../../utils/utils";
 import { createLogger, transports, format } from "winston";
-import { resourceLimits } from "worker_threads";
 
 interface Args {
     network: string,
