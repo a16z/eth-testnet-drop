@@ -16,12 +16,14 @@ import {
 	XCircleIcon,
 	MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
-import { utils } from "ethers";
+import { utils, providers } from "ethers";
 import { useEffect, useState } from "react";
 import CurrentConfig from "../../config";
 import CollectorAbi from "../../ABIs/Collector.json";
 import { ConfigForChainId } from "../../utils/utils";
 import { MerkleProof } from "./MerkleProof";
+import { useDebounce } from 'usehooks-ts'
+
 
 export const Connecting = () => {
 	const { address: walletAddress, isConnected } = useAccount();
@@ -376,9 +378,23 @@ const ClaimInteraction = (props: {
 
 const FreeInput = () => {
 	let [address, setAddress] = useState("");
+	let debouncedAddress = useDebounce<string>(address, 1000)
+	let [resolvedAddress, setResolvedAddress] = useState("");
 	let [leaves, setLeaves] = useState([] as string[]);
 
-	let addressValid = utils.isAddress(address);
+	let addressValid = utils.isAddress(resolvedAddress);
+
+	const provider = new providers.JsonRpcProvider("https://rpc.ankr.com/eth");
+	
+	useEffect(() => {
+		async function resolve() {
+			let res = (await provider.resolveName(debouncedAddress)) ?? debouncedAddress;
+			setResolvedAddress(res);
+			console.log(res);
+		}
+		resolve();
+	}, [debouncedAddress]);
+
 
 	// Get the merkle leaves
 	useEffect(() => {
@@ -393,7 +409,7 @@ const FreeInput = () => {
 	let eligable = false;
 	if (addressValid) {
 		// Only check if the address is valid
-		eligable = leaves.findIndex((leaf) => leaf.toLowerCase() === address.toLowerCase()) !== -1;
+		eligable = leaves.findIndex((leaf) => leaf.toLowerCase() === resolvedAddress.toLowerCase()) !== -1;
 	}
 	return (
 		<div>
@@ -407,7 +423,7 @@ const FreeInput = () => {
 				<input
 					type="text"
 					className="w-full text-sm border border-gray-300 rounded form-input pl-14 text-entry md:text-base"
-					placeholder="0xdeadbeef"
+					placeholder="0xdeadbeef (or ENS)"
 					onChange={(evt) => setAddress(evt.target.value)}
 					value={address}
 				/>
@@ -434,10 +450,10 @@ const FreeInput = () => {
 					)}
 				</div>
 			</div>
-			{addressValid || address === "" ? (
+			{addressValid || debouncedAddress === "" ? (
 				""
 			) : (
-				<div className="mt-1 text-blue-700">Invalid address</div>
+				<div className="mt-1 text-blue-700">Invalid address or ENS</div>
 			)}
 		</div>
 	);
