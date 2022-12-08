@@ -2,11 +2,9 @@
 import MerkleTree from "merkletreejs";
 import keccak256 from "keccak256";
 import { Buffer } from "buffer";
-import { utils } from "ethers";
 
 // @ts-ignore for keccak256
 globalThis.Buffer = Buffer;
-self.Buffer = Buffer;
 
 // merkleProof as a webworker such that it can be threaded
 self.onmessage = ({ data: { address, leaves } }) => {
