@@ -1,8 +1,13 @@
+import { Info } from "../Info";
 import Logos from "../Logos";
 import { Connecting } from "./ForegroundComponents";
+import { useLocation } from "react-router-dom";
 
 const ForegroundContainer = () => {
 	window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
+
+	let location = useLocation();
+	let showStats = location.pathname === "/stats";
 
 	return (
 		<div className="foreground-container">
@@ -70,11 +75,11 @@ const ForegroundContainer = () => {
 					</li>
 
 					<li className="overflow-hidden rounded-md shadow-md foreground-bin">
-						<h3 className="p-4 text-base leading-6 text-gray-900 border-b md:text-large">
-							Claim
+						<h3 className="items-center p-4 text-base leading-6 text-gray-900 border-b md:text-large">
+							{ showStats ? "Stats" : "Claim"}
 						</h3>
 						<div className="text-sm text-center text-gray-700 md:text-base">
-							<Connecting></Connecting>
+							{ showStats ? <Info></Info> : <Connecting></Connecting>}
 						</div>
 					</li>
 
@@ -82,7 +87,6 @@ const ForegroundContainer = () => {
 						<Logos></Logos>
 					</li>
 
-					{/* <li className="px-6 py-4 overflow-hidden rounded-md shadow foreground-bin"> */}
 					<li className="px-6 py-4">
 						<div className="text-xs">
 							See disclaimer{" "}
