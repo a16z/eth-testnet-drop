@@ -70,19 +70,28 @@ export async function getCollectionEvents(
             progressCallback(pct);
         }
 
-        let events = await contract.queryFilter(filter, from, to);
+        let numFailures = 0;
+        let events: any[] = [];
+        while (numFailures < 10) {
+            try {
+                events = await contract.queryFilter(filter, from, to);
+                break;
+            } catch (err) {
+                console.error("Query failed ", err)
+                numFailures += 1;
+            }
+        }
 
-        let collectionEvents = await Promise.all(
-            events.map(async evt => {
-                return {
-                    address: evt!.args!['sender'],
-                    message: evt!.args!['graffiti'],
-                    timestamp: 0,
-                    block: evt.blockNumber,
-                    tx: evt.transactionHash,
-                    network
-                } as CollectionEvent
-        }))
+        let collectionEvents = events.map(evt => {
+            return {
+                address: evt!.args!['sender'],
+                message: evt!.args!['graffiti'],
+                timestamp: 0,
+                block: evt.blockNumber,
+                tx: evt.transactionHash,
+                network
+            } as CollectionEvent
+        })
 
 
         allCollectionEvents = allCollectionEvents.concat(collectionEvents);
