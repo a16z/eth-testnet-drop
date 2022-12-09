@@ -1,11 +1,13 @@
-import { useState } from "react";
 import { Info } from "../Info";
 import Logos from "../Logos";
 import { Connecting } from "./ForegroundComponents";
+import { useLocation } from "react-router-dom";
 
 const ForegroundContainer = () => {
-	let [ showStats, setShowStats ] = useState(false);
 	window.Buffer = window.Buffer || require("buffer").Buffer; // For keccak256
+
+	let location = useLocation();
+	let showStats = location.pathname === "/stats";
 
 	return (
 		<div className="foreground-container">
@@ -75,8 +77,6 @@ const ForegroundContainer = () => {
 					<li className="overflow-hidden rounded-md shadow-md foreground-bin">
 						<h3 className="items-center p-4 text-base leading-6 text-gray-900 border-b md:text-large">
 							{ showStats ? "Stats" : "Claim"}
-							{/* TODO: Fix centering */}
-							<button type="button" onClick={() => {setShowStats(!showStats)}} className="float-right inline-block px-6 py-2.5 bg-transparent font-medium text-xs leading-tight rounded hover:bg-gray-100 active:bg-gray-200 transition duration-150 ease-in-out"> { showStats ? "Back to claim" : "Stats" }</button>
 						</h3>
 						<div className="text-sm text-center text-gray-700 md:text-base">
 							{ showStats ? <Info></Info> : <Connecting></Connecting>}
@@ -87,7 +87,6 @@ const ForegroundContainer = () => {
 						<Logos></Logos>
 					</li>
 
-					{/* <li className="px-6 py-4 overflow-hidden rounded-md shadow foreground-bin"> */}
 					<li className="px-6 py-4">
 						<div className="text-xs">
 							See disclaimer{" "}

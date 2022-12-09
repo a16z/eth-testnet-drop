@@ -2,7 +2,6 @@ import { Contract, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import CollectorAbi from "../ABIs/Collector.json";
 import CurrentConfig from "../config";
-import moment from "moment";
 
 export interface CollectionEvent {
     address: string,

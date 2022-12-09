@@ -19,7 +19,7 @@ export const Info = () => {
 
 
 
-    if (collectionsData.length == 0) {
+    if (collectionsData.length === 0) {
         return (
             <div className="m-2">
                 <h2>Querying...</h2>
@@ -37,7 +37,7 @@ export const Info = () => {
         let sepoliaNumClaimed = cumulativeData[cumulativeData.length - 1].Sepolia;
         return (
             <div className="p-4">
-                <div className="py-4 border-b">
+                <div className="pb-4 border-b">
                     <h2 className="text-2xl">Claims over time</h2>
                     <ResponsiveContainer width="100%" height={500}>
                         <AreaChart
@@ -78,7 +78,7 @@ export const Info = () => {
 
                 <div className="py-4">
                     <h2 className="text-2xl">All Graffiti</h2>
-                    <div className="p-4 m-4 overflow-x-scroll overflow-y-scroll text-xs text-left bg-white border h-60 border-rounded-md">
+                    <div className="p-4 m-4 overflow-x-scroll overflow-y-scroll text-xs text-left bg-white border border-rounded-md" style={{height: "50vh"}}>
                         { collectionsData.map((collectionEvt, index) => {
                             return collectionEvt.message === "" ? 
                             "" 

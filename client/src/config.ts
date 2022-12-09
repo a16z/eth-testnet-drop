@@ -87,8 +87,7 @@ const ProdConfig: Config = {
 	GraffitiMaxBlocks: 1000,
 };
 
-// let CurrentConfig =
-// 	process.env.NODE_ENV === "production" ? ProdConfig : LocalConfig;
-let CurrentConfig = ProdConfig;
+let CurrentConfig =
+	process.env.NODE_ENV === "production" ? ProdConfig : LocalConfig;
 
 export default CurrentConfig;

@@ -4,6 +4,7 @@ import "./index.css";
 import Background from "./components/background/Background";
 import ForegroundContainer from "./components/foreground/ForegroundContainer";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 
 import { WagmiConfig, createClient, configureChains } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
@@ -37,7 +38,7 @@ const client = createClient({
 });
 
 root.render(
-	<React.StrictMode>
+	<BrowserRouter>
 		<Suspense fallback={null}>
 			<Background>
 				{/* Nested within background such that we recieve foreground mouse events. */}
@@ -47,7 +48,7 @@ root.render(
 				</WagmiConfig>
 			</Background>
 		</Suspense>
-	</React.StrictMode>
+	</BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
