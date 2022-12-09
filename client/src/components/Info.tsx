@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { CollectionEvent, getAllCollectionEvents } from "../utils/query-logs";
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { profanity } from "@2toad/profanity";
+import moment from "moment";
 
 export const Info = () => {
     let [collectionsData, setCollectionsData] = useState<CollectionEvent[]>([]);
+    let [cumulativeData, setCumulativeData] = useState<CumulativePoint[]>([]);
     let [pctSepolia, setPctSepolia] = useState<number>(0);
     let [pctGoerli, setPctGoerli] = useState<number>(0);
     useEffect(() => {
-        getAllCollectionEvents([setPctGoerli, setPctSepolia]).then(collectionEvents => {
+        getAllCollectionEvents(true, [setPctGoerli, setPctSepolia]).then(collectionEvents => {
+            let cumulativeData = cumulative(collectionEvents).sort((a,b) => a.timestamp - b.timestamp); // todo: move to useeffect
             setCollectionsData(collectionEvents);
+            setCumulativeData(cumulativeData);
         });
     }, [])
 
 
-    let cumulativeData = cumulative(collectionsData);
 
     if (collectionsData.length == 0) {
         return (
@@ -30,10 +33,12 @@ export const Info = () => {
             </div>
         )
     } else {
+        let goerliNumClaimed = cumulativeData[cumulativeData.length - 1].Goerli;
+        let sepoliaNumClaimed = cumulativeData[cumulativeData.length - 1].Sepolia;
         return (
             <div className="p-4">
-                <div>
-                    <h2>Claims over time</h2>
+                <div className="py-4 border-b">
+                    <h2 className="text-2xl">Claims over time</h2>
                     <ResponsiveContainer width="100%" height={500}>
                         <AreaChart
                         data={cumulativeData}
@@ -41,25 +46,39 @@ export const Info = () => {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="timestamp" 
                                 name = 'Time' 
-                                type="number" 
-                                tickFormatter={timeStr => {
-                                    let date = new Date(timeStr);
-                                    return `${date.getMonth()}/${date.getDay()} ${date.getHours()}:${date.getMinutes()}`
-                                }} 
-                                domain = {['auto', 'auto']}/>
+                                type="number"
+                                tickFormatter={formatEpoch} 
+                                domain = {[formatEpoch(cumulativeData[0].timestamp), formatEpoch(cumulativeData[cumulativeData.length - 1].timestamp)]}/>
                             <YAxis name="Claims"/>
                             <Tooltip />
                             <Legend />
                             <Area type="monotone" dataKey="Goerli" stackId="1" stroke="#8884d8" fill="#8884d8" />
                             <Area type="monotone" dataKey="Sepolia" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-                            <Area type="monotone" dataKey="All" stackId="1" stroke="#ffc658" fill="#ffc658" />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
 
-                <div>
-                    <h2>All Graffiti</h2>
-                    <div className="p-4 m-4 overflow-y-scroll text-left bg-white border h-60">
+                <div className="py-4 border-b">
+                    <h2 className="text-2xl">Percentage claimed</h2>
+                    <div className="flex grid grid-cols-2">
+                        <div>
+                            <h1 className="text-4xl">
+                                { (goerliNumClaimed / 450_000 * 100).toFixed(3) }%
+                            </h1>
+                            <div>Goerli claimed</div>
+                        </div>
+                        <div>
+                            <h1 className="text-4xl">
+                                { (sepoliaNumClaimed / 450_000 * 100).toFixed(3) }%
+                            </h1>
+                            <div>Sepolia claimed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="py-4">
+                    <h2 className="text-2xl">All Graffiti</h2>
+                    <div className="p-4 m-4 overflow-x-scroll overflow-y-scroll text-xs text-left bg-white border h-60 border-rounded-md">
                         { collectionsData.map((collectionEvt, index) => {
                             return collectionEvt.message === "" ? 
                             "" 
@@ -77,6 +96,10 @@ export const Info = () => {
     }
 }
 
+function formatEpoch(epochMillis: number): string {
+    return moment.unix(epochMillis / 1000).format("MM/DD HH:ss");
+}
+
 interface DataPoint {
     timestamp: number,
     amount: number,
@@ -87,7 +110,6 @@ interface CumulativePoint {
     timestamp: number,
     Goerli: number,
     Sepolia: number,
-    All: number,
 }
 
 function cumulative(evts: CollectionEvent[]): CumulativePoint[] {
@@ -102,7 +124,6 @@ function cumulative(evts: CollectionEvent[]): CumulativePoint[] {
     let sorted = Array.from(results.values()).flat().sort((a, b) => a.timestamp - b.timestamp);
     let sepoliaAmount = 0;
     let goerliAmount = 0;
-    let allAmount = 0;
     let cumulativePoints: CumulativePoint[] = [];
     for (let point of sorted) {
         if (point.label === "Goerli") {
@@ -112,8 +133,7 @@ function cumulative(evts: CollectionEvent[]): CumulativePoint[] {
         } else {
             console.error("Undefined network: ", point.label);
         }
-        allAmount += 1;
-        cumulativePoints.push({timestamp: point.timestamp, Goerli: goerliAmount, Sepolia: sepoliaAmount, All: allAmount});
+        cumulativePoints.push({timestamp: point.timestamp, Goerli: goerliAmount, Sepolia: sepoliaAmount});
     }
     return cumulativePoints;
 }

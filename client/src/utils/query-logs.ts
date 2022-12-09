@@ -2,6 +2,7 @@ import { Contract, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import CollectorAbi from "../ABIs/Collector.json";
 import CurrentConfig from "../config";
+import moment from "moment";
 
 export interface CollectionEvent {
     address: string,
@@ -13,6 +14,7 @@ export interface CollectionEvent {
 }
 
 export async function getAllCollectionEvents(
+    sinceDeploy: boolean = false,
     progressCallbacks?: Dispatch<SetStateAction<number>>[]): Promise<CollectionEvent[]> {
     let all = await Promise.all(
             CurrentConfig.Chains.map(async (chainConfig, index) => {
@@ -21,9 +23,14 @@ export async function getAllCollectionEvents(
                 let address = chainConfig.ContractAddr;
                 let provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
-                let currentBlock = await provider.getBlockNumber();
-                let fromBlock = currentBlock - CurrentConfig.GraffitiMaxBlocks;
-                fromBlock = fromBlock > 0 ? fromBlock : 0;
+                let fromBlock:number
+                if (sinceDeploy) {
+                    fromBlock = chainConfig.ContractDeployBlock;
+                } else {
+                    let currentBlock = await provider.getBlockNumber();
+                    fromBlock = currentBlock - CurrentConfig.GraffitiMaxBlocks;
+                    fromBlock = fromBlock > 0 ? fromBlock : 0;
+                }
 
                 let collectionEvents: CollectionEvent[] = await getCollectionEvents(
                     address, 
@@ -54,11 +61,12 @@ export async function getCollectionEvents(
     let allCollectionEvents: CollectionEvent[] = [];
 
     let currentBlock = await provider.getBlockNumber();
-    let range = currentBlock - fromBlock;
-    for (let from = fromBlock; from <= currentBlock - 5; from += chunkSize) {
-        let to = Math.min(from + chunkSize, currentBlock - 5);
+    let queryOffset = 10; // in case node is behind
+    let range = currentBlock - queryOffset - fromBlock;
+    for (let from = fromBlock; from <= currentBlock - queryOffset; from += chunkSize) {
+        let to = Math.min(from + chunkSize, currentBlock - queryOffset);
 
-        let pct = (to - fromBlock) / range;
+        let pct = (to - fromBlock) / (range);
         if (progressCallback) {
             progressCallback(pct);
         }
@@ -81,9 +89,9 @@ export async function getCollectionEvents(
         allCollectionEvents = allCollectionEvents.concat(collectionEvents);
     }
 
+    // Approximation optimization to cut down on RPCs
     let currentTime = new Date().getTime();
-    let blockTime = 13;
-
+    let blockTime = 13000;
     for (let evt of allCollectionEvents) {
         evt.timestamp = currentTime - (blockTime * (currentBlock - evt.block));
     }
