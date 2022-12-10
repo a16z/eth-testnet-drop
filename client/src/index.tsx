@@ -8,15 +8,16 @@ import { BrowserRouter } from "react-router-dom";
 
 import { WagmiConfig, createClient, configureChains } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import GraffitiTicker from "./components/GraffitiTicker";
 import CurrentConfig from "./config";
+import { DynamicContextProvider } from "@dynamic-labs/sdk-react";
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
 
-const { chains, provider, webSocketProvider } = configureChains(
+const { provider, webSocketProvider } = configureChains(
 	CurrentConfig.Chains.map((chain) => chain.Chain),
 	[publicProvider()]
 );
@@ -24,15 +25,6 @@ const { chains, provider, webSocketProvider } = configureChains(
 // Set up client
 const client = createClient({
 	autoConnect: true,
-	connectors: [
-		new InjectedConnector({
-			chains,
-			options: {
-				name: "Injected",
-				shimDisconnect: true,
-			},
-		}),
-	],
 	provider,
 	webSocketProvider,
 });
@@ -42,10 +34,31 @@ root.render(
 		<Suspense fallback={null}>
 			<Background>
 				{/* Nested within background such that we recieve foreground mouse events. */}
-				<WagmiConfig client={client}>
-					<ForegroundContainer />
-					{CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
-				</WagmiConfig>
+				<DynamicContextProvider
+					settings={{
+						authenticateUser: false,
+						evmNetworks: CurrentConfig.Chains.map(({ Chain }) => ({
+							chainId: Chain.id,
+							vanityName: Chain.name,
+							chainName: Chain.network,
+							networkId: Chain.id,
+							nativeCurrency: Chain.nativeCurrency ?? {
+								name: "",
+								symbol: "",
+								decimals: 0,
+							},
+							rpcUrls: [...Object.values(Chain.rpcUrls)],
+						})),
+						environmentId: "1a5bc82b-cca0-497e-9481-036d5821e14e",
+					}}
+				>
+					<WagmiConfig client={client}>
+						<DynamicWagmiConnector>
+							<ForegroundContainer />
+							{CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
+						</DynamicWagmiConnector>
+					</WagmiConfig>
+				</DynamicContextProvider>
 			</Background>
 		</Suspense>
 	</BrowserRouter>
