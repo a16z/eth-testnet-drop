@@ -1,6 +1,5 @@
 import {
 	useAccount,
-	useConnect,
 	useContractRead,
 	useDisconnect,
 	useContractWrite,
@@ -8,7 +7,6 @@ import {
 	useNetwork,
 	useSwitchNetwork,
 } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import {
 	CheckCircleIcon,
 	ExclamationTriangleIcon,
@@ -22,20 +20,28 @@ import CurrentConfig from "../../config";
 import CollectorAbi from "../../ABIs/Collector.json";
 import { ConfigForChainId } from "../../utils/utils";
 import { MerkleProof } from "./MerkleProof";
+import { useDynamicContext } from "@dynamic-labs/sdk-react";
 
 export const Connecting = () => {
 	const { address: walletAddress, isConnected } = useAccount();
-	const { connect } = useConnect({
-		connector: new InjectedConnector(),
-	});
 	const { chain } = useNetwork();
 	const { switchNetwork } = useSwitchNetwork();
+	const { setShowAuthFlow, handleLogOut } = useDynamicContext();
 
 	if (isConnected && walletAddress && chain) {
 		let chainConfig = ConfigForChainId(chain!.id);
 		if (chainConfig === undefined) {
 			return (
 				<div className="p-4">
+					<div>
+						{walletAddress}{" "}
+						<button
+							className="w-full px-2 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50"
+							onClick={handleLogOut}
+						>
+							Disconnect
+						</button>
+					</div>
 					{CurrentConfig.Chains.map((chain, index) => (
 						<button
 							key={index}
@@ -56,7 +62,7 @@ export const Connecting = () => {
 				<div className="p-4">
 					<button
 						type="button"
-						onClick={() => connect()}
+						onClick={() => setShowAuthFlow(true)}
 						className="w-full rounded rounded-md text-sm md:text-base border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 					>
 						Connect wallet
