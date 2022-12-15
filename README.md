@@ -6,7 +6,7 @@ Repo contains a one-time claim for testnet tokens. The contract uses a merkle pr
 ## `cmds`
 - `yarn install`
 - `yarn test`
-- `yarn start-local-node`
+- `yarn start-local-backend`
 - `yarn start-local-client`
 - `yarn deploy-firebase`
 - `yarn prod-serve`
