@@ -36,7 +36,7 @@ root.render(
 				{/* Nested within background such that we recieve foreground mouse events. */}
 				<DynamicContextProvider
 					settings={{
-						authenticateUser: false,
+						initialAuthenticationMode: "connect-only",
 						evmNetworks: CurrentConfig.Chains.map(({ Chain }) => ({
 							chainId: Chain.id,
 							vanityName: Chain.name,
