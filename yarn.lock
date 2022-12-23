@@ -1299,10 +1299,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@dynamic-labs/multi-wallet@0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@dynamic-labs/multi-wallet/-/multi-wallet-0.14.0.tgz#d91cf5c54e80cfb5609f24ef19c90b7e104f16e5"
-  integrity sha512-2ahZ7MXjlmbjAxq2DMZLbiThTn8HfYDzQoCutU8fpIgOfbRkMlX58RXXlEpKhxixrem/vNrUaBIrYfHS0nOS+g==
+"@dynamic-labs/multi-wallet@0.14.2":
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/multi-wallet/-/multi-wallet-0.14.2.tgz#553e803a52acf10ba2b52613a4c9da99cfcd6f9d"
+  integrity sha512-igK2P6IXlwk4NXEUckN0XnG3iq2l8sadgT6453nimv0yNgRi6zYDF+w1bGEH2nUOeyIwuOTTQ51O2kGD7EKbuQ==
   dependencies:
     "@blocto/sdk" "^0.3.3"
     "@coinbase/wallet-sdk" "^3.6.2"
@@ -1324,12 +1324,12 @@
   resolved "https://registry.yarnpkg.com/@dynamic-labs/sdk-api/-/sdk-api-0.0.107.tgz#a4c9c4f234575162d120d7004784f07f366dd0b9"
   integrity sha512-tVxAIo4lAkZGay0zG5/jgT+XDfPBwAHI61qR505U4fHTQwCNgZh7FpHOcuRkKi7H9waSsDexDL/Bs5+RCThDIQ==
 
-"@dynamic-labs/sdk-react@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@dynamic-labs/sdk-react/-/sdk-react-0.14.0.tgz#113ec7cd61f169da20c79d7cf8b345d7012ec015"
-  integrity sha512-KbeUWI236hPYJu1IKKzHmoBSK4IIHgkd1CbMujV2TKePYhUJB5lvumbCbdX4sAcGQRJ0dsaQWIRSpAPed0pO3g==
+"@dynamic-labs/sdk-react@^0.14.2":
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/sdk-react/-/sdk-react-0.14.2.tgz#a8910233c28d9fbea820e3b8cdd0da961521b078"
+  integrity sha512-J+9bi4UsW/tDSgdhQCciyK8iV3dYE3tAfzYp6UZuGwgmxFzFhAVbgV6kXMWDh1drscKW5fCW9f3eyCyVsVPTpQ==
   dependencies:
-    "@dynamic-labs/multi-wallet" "0.14.0"
+    "@dynamic-labs/multi-wallet" "0.14.2"
     "@dynamic-labs/sdk-api" "0.0.107"
     country-list "^2.3.0"
     ethers "^5.7.2"
@@ -1342,10 +1342,10 @@
     twin.macro "^3.1.0"
     yup "^0.32.11"
 
-"@dynamic-labs/wagmi-connector@^0.13.58":
-  version "0.13.59"
-  resolved "https://registry.yarnpkg.com/@dynamic-labs/wagmi-connector/-/wagmi-connector-0.13.59.tgz#50ea3698ce5492eb293181da553ecfac712bb509"
-  integrity sha512-dstw5iNaYxbJ292KmRlxrg8j+B+uQ64pLP00zg5KhvQ3bOX9Mgo8qpzYN/sdN/JNABuRsxmuBkLu4lln3XpRfg==
+"@dynamic-labs/wagmi-connector@^0.14.2":
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/wagmi-connector/-/wagmi-connector-0.14.2.tgz#1fe013f28bf1ec79ff65c3bc5717288643c923ce"
+  integrity sha512-k7mcbSLl7xcf6SKCUzeXWeW49IDE6tswlTVf1ua4OR/oAv0HUxgmK9ID9ButgMiJ99BX/wV5tixVh+6MRIYFUg==
 
 "@emotion/is-prop-valid@^1.1.0":
   version "1.2.0"
