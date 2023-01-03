@@ -18,7 +18,7 @@ export async function getAllCollectionEvents(
     let all = await Promise.all(
             CurrentConfig.Chains.map(async (chainConfig, index) => {
                 let chainId = chainConfig.Chain.id;
-                let rpcUrl = chainConfig.Chain.rpcUrls.default;
+                let rpcUrl = chainConfig.Chain.rpcUrls.default.http[0];
                 let address = chainConfig.ContractAddr;
                 let provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
