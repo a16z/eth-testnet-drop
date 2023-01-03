@@ -1,4 +1,5 @@
-import { Chain, chain } from "wagmi";
+import { Chain } from "wagmi";
+import { goerli, sepolia } from "wagmi/chains";
 
 const Anvil8500Chain: Chain = {
 	id: 8500,
@@ -10,7 +11,9 @@ const Anvil8500Chain: Chain = {
 		symbol: "AETH",
 	},
 	rpcUrls: {
-		default: "http://localhost:8500",
+		default: {
+			http: ["http://localhost:8500"],
+		},
 	},
 };
 
@@ -24,12 +27,14 @@ const Anvil8501Chain: Chain = {
 		symbol: "AETH",
 	},
 	rpcUrls: {
-		default: "http://localhost:8501",
+		default: {
+			http: ["http://localhost:8501"],
+		},
 	},
 };
 
 export interface ChainConfig {
-	ContractAddr: string;
+	ContractAddr: `0x${string}`;
 	ContractDeployBlock: number;
 	HumanNetworkName: string;
 	Chain: Chain;
@@ -70,14 +75,14 @@ const ProdConfig: Config = {
 		{
 			ContractAddr: "0xc638f625aC0369d56D55106affbD5b83872Db971",
 			ContractDeployBlock: 8076460,
-			Chain: chain.goerli,
+			Chain: goerli,
 			HumanNetworkName: "Goerli",
 			BlockExplorerUrl: "https://goerli.etherscan.io/tx/",
 		},
 		{
 			ContractAddr: "0x4ed9c70E9A5C6a116365EB8A9e2cf442dECA71C7",
 			ContractDeployBlock: 2414647,
-			Chain: chain.sepolia,
+			Chain: sepolia,
 			HumanNetworkName: "Sepolia",
 			BlockExplorerUrl: "https://sepolia.etherscan.io/tx/",
 		},

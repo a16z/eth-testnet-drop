@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Background from "./components/background/Background";
@@ -6,8 +6,6 @@ import ForegroundContainer from "./components/foreground/ForegroundContainer";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
-import { WagmiConfig, createClient, configureChains } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
 import GraffitiTicker from "./components/GraffitiTicker";
 import CurrentConfig from "./config";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react";
@@ -16,18 +14,6 @@ import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
-
-const { provider, webSocketProvider } = configureChains(
-	CurrentConfig.Chains.map((chain) => chain.Chain),
-	[publicProvider()]
-);
-
-// Set up client
-const client = createClient({
-	autoConnect: true,
-	provider,
-	webSocketProvider,
-});
 
 root.render(
 	<BrowserRouter>
@@ -47,17 +33,15 @@ root.render(
 								symbol: "",
 								decimals: 0,
 							},
-							rpcUrls: [...Object.values(Chain.rpcUrls)],
+							rpcUrls: Object.values(Chain.rpcUrls).flatMap(url => url.http),
 						})),
 						environmentId: "1a5bc82b-cca0-497e-9481-036d5821e14e",
 					}}
 				>
-					<WagmiConfig client={client}>
-						<DynamicWagmiConnector>
-							<ForegroundContainer />
-							{CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
-						</DynamicWagmiConnector>
-					</WagmiConfig>
+					<DynamicWagmiConnector>
+						<ForegroundContainer />
+						{CurrentConfig.ShowGraffiti ? <GraffitiTicker /> : ""}
+					</DynamicWagmiConnector>
 				</DynamicContextProvider>
 			</Background>
 		</Suspense>
