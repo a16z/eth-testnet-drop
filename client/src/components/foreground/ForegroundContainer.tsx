@@ -14,7 +14,7 @@ const ForegroundContainer = () => {
 			<div className="flex flex-row items-center justify-center min-h-screen">
 				<ul className="items-center justify-center w-5/6 space-y-3 md:w-1/2 place-items-center align-center">
 					{/* Top spacer */}
-					<li className="h-4"></li>
+					<li className="h-16"></li>
 
 					<li className="mt-0 overflow-hidden rounded-md shadow-md foreground-bin">
 						<h1 className="p-4 text-2xl text-center text-gray-900 border-b md:text-4xl">

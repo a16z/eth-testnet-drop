@@ -19,6 +19,10 @@ root.render(
 	<BrowserRouter>
 		<Suspense fallback={null}>
 			<Background>
+				<div className="fixed top-0 w-full p-1 text-center bg-white banner">
+					New domain! Recently migrated from <a className="p-0 hover:underline" href="collect-test-eth.org">collect-test-eth.org</a> to <a className="p-0 hover:underline" href="grabteeth.xyz">grabteeth.xyz</a>!
+				</div>
+
 				{/* Nested within background such that we recieve foreground mouse events. */}
 				<DynamicContextProvider
 					settings={{
