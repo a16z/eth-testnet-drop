@@ -27,19 +27,7 @@ root.render(
 				<DynamicContextProvider
 					settings={{
 						initialAuthenticationMode: "connect-only",
-						evmNetworks: CurrentConfig.Chains.map(({ Chain }) => ({
-							chainId: Chain.id,
-							vanityName: Chain.name,
-							chainName: Chain.network,
-							networkId: Chain.id,
-							nativeCurrency: Chain.nativeCurrency ?? {
-								name: "",
-								symbol: "",
-								decimals: 0,
-							},
-							rpcUrls: Object.values(Chain.rpcUrls).flatMap(url => url.http),
-						})),
-						environmentId: "1a5bc82b-cca0-497e-9481-036d5821e14e",
+						environmentId: "e3736e0b-c7cf-4e70-9c2a-b79b864437d1",
 					}}
 				>
 					<DynamicWagmiConnector>
