@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Marquee from "react-fast-marquee";
 import { profanity } from '@2toad/profanity';
 import { getAllCollectionEvents } from '../utils/query-logs';
+import { useDynamicContext } from '@dynamic-labs/sdk-react';
 
 
 interface Message {
@@ -13,11 +14,12 @@ interface Message {
 
 const GraffitiTicker = () => {
     let [messages, setMessages] = useState<Message[]>([]);
+    let { rpcProviders } = useDynamicContext();
 
     // Query for deposit logs
     useEffect(() => {
         let fetch = async () => {
-            let collectionEvents = await getAllCollectionEvents()
+            let collectionEvents = await getAllCollectionEvents(rpcProviders)
             let msgs = collectionEvents
                 .filter(evt => evt.message !== "")
                 .map(evt => {

@@ -3,14 +3,16 @@ import { CollectionEvent, getAllCollectionEvents } from "../utils/query-logs";
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { profanity } from "@2toad/profanity";
 import moment from "moment";
+import { useDynamicContext } from "@dynamic-labs/sdk-react";
 
 export const Info = () => {
     let [collectionsData, setCollectionsData] = useState<CollectionEvent[]>([]);
     let [cumulativeData, setCumulativeData] = useState<CumulativePoint[]>([]);
     let [pctSepolia, setPctSepolia] = useState<number>(0);
     let [pctGoerli, setPctGoerli] = useState<number>(0);
+    let { rpcProviders } = useDynamicContext();
     useEffect(() => {
-        getAllCollectionEvents(true, [setPctGoerli, setPctSepolia]).then(collectionEvents => {
+        getAllCollectionEvents(rpcProviders, true, [setPctGoerli, setPctSepolia]).then(collectionEvents => {
             let cumulativeData = cumulative(collectionEvents).sort((a,b) => a.timestamp - b.timestamp); // todo: move to useeffect
             setCollectionsData(collectionEvents);
             setCumulativeData(cumulativeData);

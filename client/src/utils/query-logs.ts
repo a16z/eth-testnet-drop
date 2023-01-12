@@ -1,3 +1,5 @@
+import { DynamicRPCProviders, useDynamicContext } from "@dynamic-labs/sdk-react";
+import { Provider } from "@wagmi/core";
 import { Contract, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import CollectorAbi from "../ABIs/Collector.json";
@@ -13,14 +15,14 @@ export interface CollectionEvent {
 }
 
 export async function getAllCollectionEvents(
+    rpcProviders: DynamicRPCProviders,
     sinceDeploy: boolean = false,
     progressCallbacks?: Dispatch<SetStateAction<number>>[]): Promise<CollectionEvent[]> {
     let all = await Promise.all(
             CurrentConfig.Chains.map(async (chainConfig, index) => {
                 let chainId = chainConfig.Chain.id;
-                let rpcUrl = chainConfig.Chain.rpcUrls.default.http[0];
+                let provider = rpcProviders.getEvmRpcProviderByChainId(chainId)!.provider;
                 let address = chainConfig.ContractAddr;
-                let provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
                 let fromBlock:number
                 if (sinceDeploy) {
@@ -33,7 +35,8 @@ export async function getAllCollectionEvents(
 
                 let collectionEvents: CollectionEvent[] = await getCollectionEvents(
                     address, 
-                    rpcUrl, 
+                    // rpcUrl, 
+                    provider,
                     fromBlock, 
                     CurrentConfig.GraffitiMaxBlocks,
                     chainId,
@@ -47,13 +50,12 @@ export async function getAllCollectionEvents(
 
 export async function getCollectionEvents(
         collectorAddr: string, 
-        rpcUrl: string, 
+        provider: Provider,
         fromBlock: number, 
         chunkSize: number,
         chainId: number,
         network: string,
         progressCallback?: Dispatch<SetStateAction<number>>): Promise<CollectionEvent[]> { 
-    let provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
     let contract = new Contract(collectorAddr, CollectorAbi.abi, provider);
     let filter = contract.filters.Claim();
