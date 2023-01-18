@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@2toad/profanity": "^2.2.0",
-    "@dynamic-labs/sdk-react": "0.14.25",
-    "@dynamic-labs/wagmi-connector": "0.14.25",
+    "@dynamic-labs/sdk-react": "0.14.28",
+    "@dynamic-labs/wagmi-connector": "0.14.28",
     "@heroicons/react": "^2.0.12",
     "@react-three/cannon": "^6.4.0",
     "@react-three/drei": "^9.34.4",
