@@ -38,7 +38,7 @@ let networks: Network[] =
     },
     {
         name: "sepolia",
-        rpcUrl: `https://sepolia.infura.io/v3/${infuraApiKey}`
+        rpcUrl: `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`
     }
 ]
 
